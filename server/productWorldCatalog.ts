@@ -1,5 +1,5 @@
 import { createHash } from 'node:crypto';
-import { createReadStream } from 'node:fs';
+import { createReadStream, existsSync } from 'node:fs';
 import { readFile, readdir, realpath, stat } from 'node:fs/promises';
 import path from 'node:path';
 import {
@@ -11,20 +11,33 @@ import {
 } from 'express';
 
 const API_BASE = '/api/product-worlds';
-const ACTIVE_FAST_TRACK_ROOT = path.resolve('D:\\Proyectos\\automatizacion\\product-hold-ugc\\out');
+const ACTIVE_FAST_TRACK_ROOT = path.resolve(
+  process.env.FAST_TRACK_OUT_ROOT ?? 'D:\\Proyectos\\automatizacion\\product-hold-ugc\\out',
+);
+const BUNDLED_WORLD_SOURCE_ROOT = path.resolve('public', 'product-worlds');
+const BUNDLED_WORLD_BUILD_ROOT = path.resolve('dist', 'product-worlds');
+const BUNDLED_WORLD_ROOT = existsSync(BUNDLED_WORLD_SOURCE_ROOT)
+  ? BUNDLED_WORLD_SOURCE_ROOT
+  : BUNDLED_WORLD_BUILD_ROOT;
+const LOCAL_SCAN_ENABLED = process.env.PRODUCT_WORLD_LOCAL_SCAN !== '0';
 const CATALOG_TTL_MS = 60_000;
 const MAX_EXTRACT_BYTES = 8 * 1024 * 1024;
 const MAX_MANIFEST_ARTIFACTS = 96;
 const OPAQUE_ID_PATTERN = /^[A-Za-z0-9_-]{20,48}$/;
 
-const SCAN_SPECS = [
-  { root: 'D:\\Proyectos\\automatizacion\\product-hold-ugc\\out', depth: 2 },
+const LOCAL_SCAN_SPECS = [
+  { root: ACTIVE_FAST_TRACK_ROOT, depth: 2 },
   { root: 'D:\\DatosAplicaciones\\Grok\\worktrees', depth: 5 },
   { root: 'D:\\Proyectos\\datos\\product_research', depth: 2 },
   { root: 'D:\\Proyectos\\automatizacion\\fluxo_completo\\runs', depth: 3 },
   { root: 'D:\\Proyectos\\automatizacion\\flujovideo\\recoleccion_de_datos', depth: 3 },
   { root: 'D:\\Proyectos\\datos\\product_research_claude\\campanas', depth: 3 },
   { root: 'D:\\Media\\Proyectos\\despedida_all_stars\\tiktok_shop_extract', depth: 1 },
+] as const;
+
+const SCAN_SPECS = [
+  { root: BUNDLED_WORLD_ROOT, depth: 2 },
+  ...(LOCAL_SCAN_ENABLED ? LOCAL_SCAN_SPECS : []),
 ] as const;
 
 const EXCLUDED_DIRECTORIES = new Set([
@@ -66,7 +79,9 @@ const PHU_ARTIFACT_DIRECTORIES = [
   'phu_images/ref_sheets',
   'phu_sizechart',
   'phu_bible',
+  'phu_bible/approved',
   'phu_video',
+  'phu_video/phu_refs_r2v_16x9',
 ] as const;
 
 const SHORT_NAMES: Readonly<Record<string, string>> = {
@@ -150,6 +165,7 @@ interface GenericArtifact extends RegisteredFile {
   role: string;
   label: string;
   durationSeconds: number | null;
+  hasAlpha: boolean;
 }
 
 let catalogCache: CatalogSnapshot | null = null;
@@ -428,6 +444,13 @@ async function getCatalogSnapshot(force = false): Promise<CatalogSnapshot> {
   return catalogCache;
 }
 
+function isFinalPhuVideo(filename: string): boolean {
+  return /^phu_product_hold_/.test(filename)
+    && /(?:^|[_-])(10|15)s(?:[_-]|\.)/.test(filename)
+    && /(?:^|[_-])1080p(?:[_-]|\.)/.test(filename)
+    && !/(?:raw|720p|sample|partial|noaudio|source_reference)/.test(filename);
+}
+
 function artifactRole(relativePath: string, extension: string): string {
   const value = relativePath.replaceAll('\\', '/').toLowerCase();
   const filename = path.basename(value);
@@ -439,6 +462,12 @@ function artifactRole(relativePath: string, extension: string): string {
   if (filename.includes('sizechart') || filename.includes('size_chart')) return 'size_chart';
   if (filename.includes('screenshot')) return 'source_screenshot';
   if (extension === '.mp4' || extension === '.mov' || extension === '.webm') {
+    if (filename.startsWith('phu_product_hold_')) {
+      if (isFinalPhuVideo(filename)) return 'final_video';
+      return /(?:raw|720p|sample|partial|noaudio|source_reference)/.test(filename)
+        ? 'source_video'
+        : 'video_result';
+    }
     return filename.includes('final') ? 'final_video' : 'video_result';
   }
   if (filename.includes('variant')) return 'variant_image';
@@ -493,6 +522,9 @@ async function buildGenericArtifacts(world: CatalogWorldInternal): Promise<Gener
     if (!mimeType) continue;
     const fileStats = await stat(filePath);
     const kind = artifactKind(extension);
+    const hasAlpha = kind === 'image' && extension === '.png'
+      ? await pngHasAlpha(filePath)
+      : false;
     if (kind === 'image' && fileStats.size <= 8 * 1024 * 1024) {
       const digest = createHash('sha256').update(await readFile(filePath)).digest('base64url');
       if (seenImageDigests.has(digest)) continue;
@@ -511,6 +543,7 @@ async function buildGenericArtifacts(world: CatalogWorldInternal): Promise<Gener
       role: artifactRole(relativePath, extension),
       label: labelFromFilename(filename),
       durationSeconds: durationMatch ? Number(durationMatch[1]) : null,
+      hasAlpha,
     });
   }
 
@@ -518,6 +551,8 @@ async function buildGenericArtifacts(world: CatalogWorldInternal): Promise<Gener
 }
 
 function publicArtifact(artifact: GenericArtifact) {
+  const url = `${API_BASE}/artifacts/${artifact.id}?v=${Math.round(artifact.updatedAtMs)}-${artifact.size}`;
+  const isTransparentImage = artifact.kind === 'image' && artifact.hasAlpha;
   return {
     id: artifact.id,
     kind: artifact.kind,
@@ -529,8 +564,12 @@ function publicArtifact(artifact: GenericArtifact) {
     size: artifact.size,
     updatedAt: new Date(artifact.updatedAtMs).toISOString(),
     durationSeconds: artifact.durationSeconds,
-    url: `${API_BASE}/artifacts/${artifact.id}?v=${Math.round(artifact.updatedAtMs)}-${artifact.size}`,
-    backgroundMode: artifact.kind === 'image' ? 'preserved' : undefined,
+    url,
+    displayUrl: artifact.kind === 'image' ? url : undefined,
+    transparentUrl: isTransparentImage ? url : undefined,
+    backgroundMode: artifact.kind === 'image'
+      ? isTransparentImage ? 'transparent' : 'preserved'
+      : undefined,
   };
 }
 
@@ -546,7 +585,14 @@ async function buildGenericManifest(world: CatalogWorldInternal) {
   const heroArtifact = artifacts.find((artifact) => artifact.absolutePath === fileRegistry.get(world.heroId)?.absolutePath)
     ?? artifacts.find((artifact) => artifact.kind === 'image')
     ?? null;
-  const finalVideo = artifacts.find((artifact) => artifact.role === 'final_video')
+  const finalVideos = artifacts
+    .filter((artifact) => artifact.role === 'final_video')
+    .sort((left, right) => (
+      (right.durationSeconds ?? 0) - (left.durationSeconds ?? 0)
+      || right.updatedAtMs - left.updatedAtMs
+      || left.filename.localeCompare(right.filename)
+    ));
+  const finalVideo = finalVideos[0]
     ?? artifacts.find((artifact) => artifact.kind === 'video')
     ?? null;
   const rating = metricValue(product, 'rating');
@@ -598,6 +644,7 @@ async function buildGenericManifest(world: CatalogWorldInternal) {
       title: world.title,
       heroUrl: world.heroUrl,
       heroDisplayUrl: world.heroUrl,
+      heroTransparentUrl: world.heroHasAlpha ? world.heroUrl : null,
     },
     metrics: {
       rating,
@@ -607,7 +654,7 @@ async function buildGenericManifest(world: CatalogWorldInternal) {
       variantCount: variants.length,
       imageCount,
       videoCount,
-      finalVideoCount: finalVideo ? 1 : 0,
+      finalVideoCount: finalVideos.length,
     },
     reviews: { total: reviewCount ?? 0, capturedCount: 0, hasMore: false, sample: [] },
     artifacts: publicArtifacts,
@@ -691,8 +738,15 @@ export function createProductWorldRouter(): Router {
   }));
 
   router.get('/worlds/:productId/manifest', asyncHandler(async (request, response) => {
-    const snapshot = await getCatalogSnapshot();
-    const world = snapshot.worlds.find((candidate) => candidate.productId === request.params.productId);
+    let snapshot = await getCatalogSnapshot();
+    let world = snapshot.worlds.find((candidate) => candidate.productId === request.params.productId);
+    const activeSource = world?.sources.find(
+      (source) => source.activeFastTrackRunId === world?.activeFastTrackRunId,
+    );
+    if (world?.activeFastTrackRunId && (!activeSource || !existsSync(activeSource.extractPath))) {
+      snapshot = await getCatalogSnapshot(true);
+      world = snapshot.worlds.find((candidate) => candidate.productId === request.params.productId);
+    }
     if (!world) {
       response.status(404).json({ error: { code: 'world_not_found', message: 'Product world not found.' } });
       return;

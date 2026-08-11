@@ -1,0 +1,40 @@
+Vertical 9:16 photoreal handheld UGC product-hold video, 10 seconds, soft clean product light, subtle handheld shake.
+CORE CONCEPT (non-negotiable): hands showing and holding the product.
+
+MASTER REFERENCES (7 images, 16:9 product plates): <IMAGE_1> <IMAGE_2> <IMAGE_3> <IMAGE_4> <IMAGE_5> <IMAGE_6> <IMAGE_7>. They are locked photography of the same physical product from this listing.
+
+Product listing title (context only — do NOT render as on-screen text): ABZ Sombrero de Maestro Negro con Detalles en Rosa y Blanco para Estilo Único
+Category context: Accesorios de moda / Accesorios para ropa / Sombreros
+
+USER ATMOSPHERE / STYLE (secondary — must stay product-hold):
+Moody night studio with deep charcoal walls, single cool key light from camera-left, gentle neon edge accent that does NOT recolor the product, light fog — editorial UGC for «ABZ Sombrero de Maestro Negro con Detalles en Rosa y Blanco ».
+- Apply only as background, lighting, camera mood, or pacing of the hand showcase.
+- MUST keep: hands holding/showing the product; product identity locked to refs.
+- MUST NOT: remove hands, hide the product, add full-body fashion show, dance focus, face talking-head, or multi-product story.
+
+STRICT PRODUCT FIDELITY (universal — applies to every product):
+- Copy shape, proportions, colors, materials, logos, prints, embroidery, hardware, and surface finish ONLY from the reference images.
+- Do NOT redesign the product. Do NOT invent logos, characters, stickers, patterns, or graphics not visible in the refs.
+- Do NOT recolor the product or invent alternate colorways.
+- Critical logos / badges / prints: keep their EXACT colors and textures from the refs (including metallic, white, transparent, rhinestone, matte, etc. when present). Never replace them with a flat color sampled from the body fabric if the refs show otherwise.
+- Macro beats must magnify real details from the refs, not simplified placeholders.
+- NO face, no model head, no phone, no mirror. Product always supported by hand/forearm, never floating.
+- Do NOT invent packaging unless packaging is clearly visible in the references.
+- Do not render UI layouts, grids, or document chrome from a Product Bible as physical scenery — only the product.
+- EXACTLY ONE physical product exists in every frame. Never duplicate, stack, mirror, reflect, ghost, overlay, or reveal a second copy of the product.
+- A real hand or forearm must visibly support the single product in EVERY beat, including macros and the final hero.
+- If a USER ATMOSPHERE / STYLE is provided, lock that same background, lighting, and mood across EVERY beat. Never switch to a white or neutral studio mid-video.
+
+EDIT STRUCTURE — rapid UGC jump cuts, fidelity first:
+Beat 1 (0-2.2s): medium shot, hand lifts product, front hero matching primary ref.
+Beat 2 (2.2-4.5s): SNAP CUT macro of the key distinctive detail from refs (logo, texture, hardware).
+Beat 3 (4.5-6.8s): SNAP CUT side / alternate angle from later refs, hand rotates.
+Beat 4 (6.8-8.5s): SNAP CUT another real angle from refs only — no invented details.
+Beat 5 (8.5-10s): SNAP CUT to the SAME SINGLE PRODUCT in a front hero hold, steady hand, same product truth as Beat 1. No second product beneath or behind it.
+
+TRANSITION LOCK (non-negotiable): HARD CUTS ONLY. Each new beat replaces the prior frame instantly. NO crossfades, dissolves, morphs, double exposure, transparent overlap, motion trails, reflections, or transition frames containing two products.
+
+No on-screen captions, no price graphics.
+
+NATIVE SPANISH MEXICAN voiceover, one consistent adult male UGC voice, conversational, no music bed, no price mention:
+"Mira el detalle de cerca: se ve la calidad y el acabado. Es de esas piezas que ya no te quitas."

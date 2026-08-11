@@ -1,0 +1,19 @@
+{
+  "concept": "manos mostrando y sosteniendo producto (product-hold UGC vertical)",
+  "link_or_id": "1735785778453579666",
+  "vibe": "Moody night studio with deep charcoal walls, single cool key light from camera-left, gentle neon edge accent that does NOT recolor the product, light fog — editorial UGC for «ABZ Sombrero de Maestro Negro con Detalles en Rosa y Blanco ».",
+  "vibe_applied": false,
+  "stack": "v1.2_full_mandatory",
+  "steps": [
+    "extract",
+    "postprocess",
+    "watermark_clean_if_needed",
+    "fondo_choice_if_needed",
+    "product_bible_multi_edit",
+    "r2v_max_refs",
+    "upscale_1080"
+  ],
+  "final_video": "phu_product_hold_maxrefs_15s_1080p.mp4",
+  "fondo_choice": "6",
+  "fondo_label": "Propuesta creativa B"
+}

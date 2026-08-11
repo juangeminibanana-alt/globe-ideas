@@ -1,0 +1,67 @@
+{
+  "name": "ABZ SOMBRERO DE MAESTRO NEGRO CON DETALLES EN…",
+  "name_full": "ABZ Sombrero de Maestro Negro con Detalles en Rosa y Blanco para Estilo Único",
+  "subtitle": "ABZ Sombrero de Maestro Negro con Detalles en Rosa y Blanco para · Accesorios de moda / Accesorios para ropa / Sombreros",
+  "role": "Accesorios de moda / Accesorios para ropa / Sombreros · Seller: sas10001",
+  "scale": "Physical product as in gallery hero shots; package approx 26×15×18 (listing units); weight 120 (listing units). Use human hand scale from refs if shown. Do not invent unlisted size labels.",
+  "key_traits": [
+    "Match silhouette and proportions exactly from reference photos",
+    "Match primary colors and surface finish from references",
+    "Preserve all logos, prints, labels, and hardware visible in refs",
+    "No redesign, no alternate colorways, no invented branding"
+  ],
+  "detail_studies": [
+    "FRONT — Full frontal product view matching the primary gallery hero; clean background; true colors and logos",
+    "3/4 VIEW — Three-quarter angle showing depth, edges, and side surface details present in references",
+    "PROFILE / REVERSE — Side or rear view only if supported by references; otherwise alternate 3/4 from gallery",
+    "DETAIL ANGLE — Close study of the most distinctive feature visible in references (logo, texture, hardware, print)"
+  ],
+  "states": [
+    "DEFAULT / RESTING — Product alone, neutral studio light, soft shadow, hero angle from refs",
+    "ACTIVE / ENGAGED — Slight dynamic tilt or hand-supported presentation as in UGC-style refs if present",
+    "HIGHLIGHT / FEATURED — Macro-forward of the key distinguishing detail from references",
+    "HAND SCALE — Fingers supporting the product for scale when lifestyle/hand refs exist; NOT invent packaging"
+  ],
+  "key_accessory": "Only elements attached to or clearly part of the product in references. Do not invent detachable accessories or packaging not shown.",
+  "callouts": [
+    "Primary logo / brand mark / front face graphic — match references exactly",
+    "Secondary material or texture zone (fabric, metal, plastic, stitch, print) from refs",
+    "Edge / hardware / closure / critical small detail unique to this listing"
+  ],
+  "palette": [
+    [
+      "Tone A",
+      "#F0F0F0"
+    ],
+    [
+      "Tone B",
+      "#181818"
+    ],
+    [
+      "Tone C",
+      "#000000"
+    ],
+    [
+      "Tone D",
+      "#303030"
+    ],
+    [
+      "Tone E",
+      "#D8D8D8"
+    ],
+    [
+      "Tone F",
+      "#C0A8C0"
+    ]
+  ],
+  "style": "hyper-real product photography, catalog bible sheet, controlled studio lighting, high material fidelity, gentle depth of field",
+  "prod_notes": "Locked master for this listing only. Title context: ABZ Sombrero de Maestro Negro con Detalles en Rosa y Blanco para Estilo Único. Copy materials, proportions, colors, logos, and surface detail solely from reference images. Do not invent logos, characters, stickers, colorways, or packaging absent from refs. No retail packaging in master set. Category: Accesorios de moda / Accesorios para ropa / Sombreros. Gallery frames available: 4.",
+  "has_packaging": false,
+  "has_size_chart": false,
+  "gender": "",
+  "gallery_count": 4,
+  "product_id": "1735785778453579666",
+  "seller": "sas10001",
+  "category_path": "Accesorios de moda / Accesorios para ropa / Sombreros",
+  "specs": {}
+}

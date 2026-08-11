@@ -1,0 +1,66 @@
+{
+  "max_refs_api": 7,
+  "canvas": [
+    1920,
+    1080
+  ],
+  "aspect": "16:9",
+  "n": 7,
+  "items": [
+    {
+      "index": 1,
+      "role": "front_full",
+      "source": ".\\phu_images\\gallery\\gallery_01.jpg",
+      "crop": null,
+      "out": "phu_r2v_ref_01_front_full.jpg"
+    },
+    {
+      "index": 2,
+      "role": "detail_macro_front",
+      "source": ".\\phu_images\\gallery\\gallery_01.jpg",
+      "crop": [
+        390,
+        226,
+        1659,
+        1495
+      ],
+      "out": "phu_r2v_ref_02_detail_macro_front.jpg"
+    },
+    {
+      "index": 3,
+      "role": "gallery_02",
+      "source": ".\\phu_images\\gallery\\gallery_02.jpg",
+      "crop": null,
+      "out": "phu_r2v_ref_03_gallery_02.jpg"
+    },
+    {
+      "index": 4,
+      "role": "gallery_03",
+      "source": ".\\phu_images\\gallery\\gallery_03.jpg",
+      "crop": null,
+      "out": "phu_r2v_ref_04_gallery_03.jpg"
+    },
+    {
+      "index": 5,
+      "role": "gallery_04",
+      "source": ".\\phu_images\\gallery\\gallery_04.jpg",
+      "crop": null,
+      "out": "phu_r2v_ref_05_gallery_04.jpg"
+    },
+    {
+      "index": 6,
+      "role": "product_bible",
+      "source": ".\\phu_bible\\approved\\phu_product_bible_technical_rev03_16x9.png",
+      "crop": null,
+      "out": "phu_r2v_ref_06_product_bible.jpg"
+    },
+    {
+      "index": 7,
+      "role": "description",
+      "source": ".\\phu_images\\gallery\\gallery_01.jpg",
+      "crop": null,
+      "out": "phu_r2v_ref_01_front_full.jpg",
+      "alias_of": 1
+    }
+  ]
+}

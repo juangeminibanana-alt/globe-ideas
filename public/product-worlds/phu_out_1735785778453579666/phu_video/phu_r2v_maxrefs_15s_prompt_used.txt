@@ -1,0 +1,32 @@
+Vertical 9:16 photoreal handheld UGC product-hold video, exactly 15 seconds, at night in a real dim room, with one single off-screen warm practical light and a near-black background. This background and atmosphere match the SAD BOYZ reference video mood only; absolutely no SAD BOYZ cap, logo, graphics or product details may appear. The real room remains barely perceptible in deep shadow, with no studio void, no neon colors and no visible furniture competing with the product. Slight natural handheld movement. No face, no head, no phone, no mirror, no turntable, no floating product.
+
+MASTER REFERENCES, all showing the same physical ABZ cap:
+- <IMAGE_1>: complete straight front view; canonical silhouette, proportions, black crown, white ABZ embroidery with pink shadow, curved black brim and black/pink raised brim embroidery.
+- <IMAGE_2>: front macro; exact ABZ letter shapes, thread relief, colors and brim embroidery.
+- <IMAGE_3>: complete front three-quarter view; canonical crown depth and brim curvature.
+- <IMAGE_4>: complete side A; exact silver-gray side panels and every visible magenta/white motif.
+- <IMAGE_5>: complete opposite side B; exact panel artwork and stitching from that real view.
+- <IMAGE_6>: complete interior/underside; exact lining, seam tapes and white dragon graphics under the brim.
+
+STRICT PRODUCT FIDELITY:
+- Copy shape, proportions, construction, colors, embroidery, stitching, panels, motifs and materials only from the six references.
+- The black front crown, white ABZ logo, pink outline/shadow, black curved brim, black-and-pink brim embroidery, silver-gray patterned side panels and interior graphics must remain unchanged.
+- Do not invent, simplify, mirror, translate or replace any logo, number, character, motif, seam, strap, fabric or color.
+- EXACTLY ONE physical cap exists in every frame. Never duplicate, stack, mirror, reflect, ghost or overlay the cap.
+- A real hand or forearm visibly supports the cap in every shot, including macros and the interior view.
+- Keep the same real dim room, single warm practical light and near-black background throughout all six shots. Do not switch to a white studio, black void or colored neon setup.
+
+EDIT STRUCTURE — six discrete UGC shots with true hard cuts:
+Beat 1 (0.0-2.5s): medium front hero hold matching <IMAGE_1>; hand lifts the complete cap into the single warm practical light.
+Beat 2 (2.5-5.0s): HARD CUT to a stable extreme macro matching <IMAGE_2>; show the exact white-and-pink ABZ embroidery and raised brim detail.
+Beat 3 (5.0-7.5s): HARD CUT to the complete front three-quarter angle matching <IMAGE_3>; hand makes a small controlled rotation.
+Beat 4 (7.5-10.0s): HARD CUT to complete side A matching <IMAGE_4>; keep every silver-gray panel motif and magenta detail exact.
+Beat 5 (10.0-12.5s): HARD CUT to the interior/underside matching <IMAGE_6>; two hands open and support the cap, with the white dragon graphics and seam tapes visible.
+Beat 6 (12.5-15.0s): HARD CUT back to a complete front hero hold matching <IMAGE_1>; steady final pose, exactly one cap.
+
+TRANSITION LOCK: HARD CUTS ONLY. At 2.5, 5.0, 7.5, 10.0 and 12.5 seconds the next shot replaces the previous frame instantly. No crossfades, dissolves, morphs, double exposure, transparent overlap, motion trails, reflections or transition frames containing two caps.
+
+No on-screen captions, no subtitles, no price graphics, no music bed.
+
+NATIVE SPANISH MEXICAN voiceover, one consistent adult male UGC voice, confident and conversational. Speak naturally across the 15 seconds:
+"Mira esta gorra ABZ: bordado frontal en blanco y rosa, visera con relieve y paneles laterales llenos de detalle. Por dentro, el diseño también continúa. Una pieza que destaca desde cualquier ángulo."
