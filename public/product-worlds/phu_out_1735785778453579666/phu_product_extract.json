@@ -1,0 +1,269 @@
+{
+    "source_url":  "https://shop.tiktok.com/mx/pdp/1735785778453579666",
+    "final_url":  "https://shop.tiktok.com/mx/pdp/1735785778453579666",
+    "surface":  "storefront",
+    "extracted_at":  "2026-08-11T05:36:47.446Z",
+    "product":  {
+                    "id":  "1735785778453579666",
+                    "title":  "ABZ Sombrero de Maestro Negro con Detalles en Rosa y Blanco para Estilo Ãšnico",
+                    "description":  [
+                                        "00"
+                                    ],
+                    "specs":  [
+
+                              ],
+                    "size_chart":  null,
+                    "price":  {
+                                  "current":  "257",
+                                  "original":  "286",
+                                  "discount":  "10%",
+                                  "saving":  "Ahorro de $29.00",
+                                  "currency":  "MXN",
+                                  "symbol":  "$",
+                                  "per_sku":  {
+                                                  "1735785758729406354":  "257"
+                                              }
+                              },
+                    "shipping":  {
+                                     "fee_original":  "59",
+                                     "fee_real":  "0",
+                                     "label":  "Gratis",
+                                     "currency":  "MXN"
+                                 },
+                    "seller":  {
+                                   "id":  "7494661727090345874",
+                                   "global_seller_id":  "7494661727090345874",
+                                   "name":  "sas10001",
+                                   "followers_count":  "3838",
+                                   "video_count":  "15",
+                                   "on_sell_product_count":  146,
+                                   "shop_sold_count":  13821,
+                                   "global_sold_count":  "13821",
+                                   "shop_review_count":  904,
+                                   "shop_link":  "https://shop.tiktok.com/mx/store/sas10001/7494661727090345874",
+                                   "logo":  "https://p16-oec-sg.ibyteimg.com/tos-alisg-i-aphluv4xwc-sg/a931dc561ef04181ad7a0f0af899e25b~tplv-aphluv4xwc-origin-jpeg.jpeg"
+                               },
+                    "variants":  [
+                                     {
+                                         "sku_id":  "1735785758729406354",
+                                         "seller_sku":  null,
+                                         "stock":  264,
+                                         "in_stock":  true,
+                                         "price":  "257",
+                                         "origin_price":  "286",
+                                         "currency":  "MXN",
+                                         "image_uri":  null,
+                                         "package":  {
+                                                         "length":  26,
+                                                         "width":  15,
+                                                         "height":  18,
+                                                         "weight":  120,
+                                                         "dimension_unit_code":  1,
+                                                         "weight_unit_code":  1,
+                                                         "volume":  7020
+                                                     },
+                                         "logistics_property":  [
+
+                                                                ],
+                                         "especificaciÃ³n":  "Por defecto"
+                                     }
+                                 ],
+                    "variant_axes":  [
+                                         {
+                                             "name":  "EspecificaciÃ³n",
+                                             "values":  [
+                                                            "Por defecto"
+                                                        ]
+                                         }
+                                     ],
+                    "stats":  {
+                                  "sold_count":  "688",
+                                  "rating":  4.9,
+                                  "review_count":  "86"
+                              },
+                    "categories":  [
+                                       {
+                                           "category_id":  "605248",
+                                           "level":  1,
+                                           "is_leaf":  false,
+                                           "parent_id":  "0",
+                                           "category_name":  "Accesorios de moda",
+                                           "name_key":  "magellan_605248"
+                                       },
+                                       {
+                                           "category_id":  "905224",
+                                           "level":  2,
+                                           "is_leaf":  false,
+                                           "parent_id":  "605248",
+                                           "category_name":  "Accesorios para ropa",
+                                           "name_key":  "magellan_905224"
+                                       },
+                                       {
+                                           "category_id":  "906248",
+                                           "level":  3,
+                                           "is_leaf":  true,
+                                           "parent_id":  "905224",
+                                           "category_name":  "Sombreros",
+                                           "name_key":  "magellan_906248"
+                                       }
+                                   ],
+                    "bread_crumbs":  [
+                                         {
+                                             "name":  "TikTok Shop",
+                                             "link":  "https://shop.tiktok.com/mx"
+                                         },
+                                         {
+                                             "name":  "Accesorios de moda",
+                                             "link":  "https://shop.tiktok.com/mx/c/fashion-accessories/605248"
+                                         },
+                                         {
+                                             "name":  "Accesorios de ropa",
+                                             "link":  "https://shop.tiktok.com/mx/c/clothes-accessories/905224"
+                                         },
+                                         {
+                                             "name":  "Sombreros",
+                                             "link":  "https://shop.tiktok.com/mx/c/hats/906248"
+                                         },
+                                         {
+                                             "name":  "ABZ Sombrero de Maestro Negro con Detalles en Rosa y Blanco para Estilo Ãšnico",
+                                             "link":  "https://shop.tiktok.com/mx/pdp/1735785778453579666"
+                                         }
+                                     ],
+                    "promotion_tag":  {
+
+                                      },
+                    "region":  {
+                                   "sale_region":  "MX",
+                                   "ip_region":  "MX",
+                                   "lang":  "es-419"
+                               },
+                    "availability":  {
+                                         "reason":  0
+                                     },
+                    "size_chart_note":  "Garment measurements do not come as text in the JSON. They are usually in a description_image (the widest one, e.g. 1366x688). Download it and read it with vision/OCR.",
+                    "size_chart_candidates":  [
+
+                                              ]
+                },
+    "images":  [
+                   {
+                       "order":  1,
+                       "type":  "gallery",
+                       "uri":  "tos-alisg-i-aphluv4xwc-sg/cc605a8fc5214b778b6d0b3fcc91786e",
+                       "w":  2048,
+                       "h":  2048,
+                       "url":  "https://p16-oec-sg.ibyteimg.com/tos-alisg-i-aphluv4xwc-sg/cc605a8fc5214b778b6d0b3fcc91786e~tplv-aphluv4xwc-origin-jpeg.jpeg",
+                       "url_as_served":  "https://p16-oec-sg.ibyteimg.com/tos-alisg-i-aphluv4xwc-sg/cc605a8fc5214b778b6d0b3fcc91786e~tplv-aphluv4xwc-crop-webp:2048:2048.webp?dr=15592\u0026t=555f072d\u0026ps=933b5bde\u0026shp=8dbd94bf\u0026shcp=607f11de\u0026idc=my\u0026from=2378011839"
+                   },
+                   {
+                       "order":  2,
+                       "type":  "gallery",
+                       "uri":  "tos-alisg-i-aphluv4xwc-sg/b85244e6dfb14ca7976c0a4424786f27",
+                       "w":  500,
+                       "h":  500,
+                       "url":  "https://p16-oec-sg.ibyteimg.com/tos-alisg-i-aphluv4xwc-sg/b85244e6dfb14ca7976c0a4424786f27~tplv-aphluv4xwc-origin-jpeg.jpeg",
+                       "url_as_served":  "https://p16-oec-sg.ibyteimg.com/tos-alisg-i-aphluv4xwc-sg/b85244e6dfb14ca7976c0a4424786f27~tplv-aphluv4xwc-crop-webp:500:500.webp?dr=15592\u0026t=555f072d\u0026ps=933b5bde\u0026shp=8dbd94bf\u0026shcp=607f11de\u0026idc=my\u0026from=2378011839"
+                   },
+                   {
+                       "order":  3,
+                       "type":  "gallery",
+                       "uri":  "tos-alisg-i-aphluv4xwc-sg/ac88053812fa411fb7e5034c46e09b17",
+                       "w":  500,
+                       "h":  500,
+                       "url":  "https://p16-oec-sg.ibyteimg.com/tos-alisg-i-aphluv4xwc-sg/ac88053812fa411fb7e5034c46e09b17~tplv-aphluv4xwc-origin-jpeg.jpeg",
+                       "url_as_served":  "https://p16-oec-sg.ibyteimg.com/tos-alisg-i-aphluv4xwc-sg/ac88053812fa411fb7e5034c46e09b17~tplv-aphluv4xwc-crop-webp:500:500.webp?dr=15592\u0026t=555f072d\u0026ps=933b5bde\u0026shp=8dbd94bf\u0026shcp=607f11de\u0026idc=my\u0026from=2378011839"
+                   },
+                   {
+                       "order":  4,
+                       "type":  "gallery",
+                       "uri":  "tos-alisg-i-aphluv4xwc-sg/956f6478b09a41f1b19ca9e39e15a918",
+                       "w":  500,
+                       "h":  500,
+                       "url":  "https://p16-oec-sg.ibyteimg.com/tos-alisg-i-aphluv4xwc-sg/956f6478b09a41f1b19ca9e39e15a918~tplv-aphluv4xwc-origin-jpeg.jpeg",
+                       "url_as_served":  "https://p16-oec-sg.ibyteimg.com/tos-alisg-i-aphluv4xwc-sg/956f6478b09a41f1b19ca9e39e15a918~tplv-aphluv4xwc-crop-webp:500:500.webp?dr=15592\u0026t=555f072d\u0026ps=933b5bde\u0026shp=8dbd94bf\u0026shcp=607f11de\u0026idc=my\u0026from=2378011839"
+                   },
+                   {
+                       "order":  5,
+                       "type":  "description",
+                       "uri":  "tos-alisg-i-aphluv4xwc-sg/bef070f329864bea8187709f8ca2bc06",
+                       "w":  2048,
+                       "h":  2048,
+                       "url":  "https://p16-oec-sg.ibyteimg.com/tos-alisg-i-aphluv4xwc-sg/bef070f329864bea8187709f8ca2bc06~tplv-aphluv4xwc-origin-jpeg.jpeg"
+                   },
+                   {
+                       "order":  6,
+                       "type":  "description",
+                       "uri":  "tos-alisg-i-aphluv4xwc-sg/18409be7712a481b8d0ac6a2a38c6731",
+                       "w":  500,
+                       "h":  500,
+                       "url":  "https://p16-oec-sg.ibyteimg.com/tos-alisg-i-aphluv4xwc-sg/18409be7712a481b8d0ac6a2a38c6731~tplv-aphluv4xwc-origin-jpeg.jpeg"
+                   },
+                   {
+                       "order":  7,
+                       "type":  "description",
+                       "uri":  "tos-alisg-i-aphluv4xwc-sg/d9decb1cf8404dfbaa8510667b346c0b",
+                       "w":  500,
+                       "h":  500,
+                       "url":  "https://p16-oec-sg.ibyteimg.com/tos-alisg-i-aphluv4xwc-sg/d9decb1cf8404dfbaa8510667b346c0b~tplv-aphluv4xwc-origin-jpeg.jpeg"
+                   },
+                   {
+                       "order":  8,
+                       "type":  "description",
+                       "uri":  "tos-alisg-i-aphluv4xwc-sg/a05cee79f7a946a3b593e1bb84d46950",
+                       "w":  500,
+                       "h":  500,
+                       "url":  "https://p16-oec-sg.ibyteimg.com/tos-alisg-i-aphluv4xwc-sg/a05cee79f7a946a3b593e1bb84d46950~tplv-aphluv4xwc-origin-jpeg.jpeg"
+                   }
+               ],
+    "reviews":  {
+                    "total":  "86",
+                    "has_more":  false,
+                    "items":  [
+
+                              ],
+                    "sample_redacted":  true
+                },
+    "creator_videos":  [
+
+                       ],
+    "creator_videos_note":  "The \"Inspirate con creadores\" / affiliate-creator-video section does NOT exist on web (neither H5 nor storefront). It is exclusive to the native Android/iOS apps. Verified across surfaces: 0 \u003cvideo\u003e tags, 0 a[href*=\"/video/\"] anchors, 0 aweme_id anywhere in the HTML. Never invent video URLs here â€” an empty array is the correct, non-failure result.",
+    "diagnostics":  {
+                        "errors":  [
+
+                                   ],
+                        "warnings":  [
+                                         "reviews.has_more=true -\u003e only the first page is here. The star-rating filter dropdown pulls a different real sample per star value (see SKILL.md \"Curated review sample\" â€” it is a UI control, not a scrollable list)."
+                                     ],
+                        "state_scripts_present":  [
+                                                      "__MODERN_ROUTER_DATA__",
+                                                      "__MODERN_SSR_DATA__"
+                                                  ],
+                        "loader_keys":  [
+                                            "layout",
+                                            "(region)/pdp/(product_name_slug$)/(product_id)/page"
+                                        ],
+                        "loader_key_used":  "(region)/pdp/(product_name_slug$)/(product_id)/page",
+                        "components":  [
+                                           "user_info",
+                                           "page_header",
+                                           "bread_crumbs*",
+                                           "product_info*",
+                                           "shop_info",
+                                           "alternative_product",
+                                           "feed_list",
+                                           "feed_list",
+                                           "expose_pool"
+                                       ],
+                        "surface":  "storefront",
+                        "counts":  {
+                                       "images":  8,
+                                       "gallery":  4,
+                                       "variants":  1,
+                                       "reviews_captured":  3,
+                                       "reviews_total":  "86"
+                                   },
+                        "extracted_at":  "2026-08-11T05:36:47.446Z",
+                        "url":  "https://shop.tiktok.com/mx/pdp/1735785778453579666",
+                        "ok":  true
+                    }
+}

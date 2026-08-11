@@ -1,0 +1,28 @@
+{
+  "request_id": null,
+  "model": "grok-imagine-video",
+  "duration": 10,
+  "aspect_ratio": "9:16",
+  "resolution_api": "720p",
+  "mode": "reference_images",
+  "n_refs": 7,
+  "max_refs_api": 7,
+  "ref_prep": "local_16x9_max_fill_white",
+  "product_title": "ABZ Sombrero de Maestro Negro con Detalles en Rosa y Blanco para Estilo Único",
+  "prompt_universal": true,
+  "refs": [
+    "phu_refs_r2v_16x9/phu_r2v_ref_01_front_full.jpg",
+    "phu_refs_r2v_16x9/phu_r2v_ref_02_detail_macro_front.jpg",
+    "phu_refs_r2v_16x9/phu_r2v_ref_03_gallery_02.jpg",
+    "phu_refs_r2v_16x9/phu_r2v_ref_04_gallery_03.jpg",
+    "phu_refs_r2v_16x9/phu_r2v_ref_05_gallery_04.jpg",
+    "phu_refs_r2v_16x9/phu_r2v_ref_06_product_bible.jpg",
+    "phu_refs_r2v_16x9/phu_r2v_ref_01_front_full.jpg"
+  ],
+  "ref_aliases": { "7": 1 },
+  "raw": null,
+  "raw_status": "omitted_from_portable_bundle",
+  "final_1080p": "phu_product_hold_maxrefs_10s_1080p.mp4",
+  "prompt_file": "phu_r2v_maxrefs_prompt_used.txt",
+  "material_lock": "copy exact materials/colors from refs only (universal)"
+}

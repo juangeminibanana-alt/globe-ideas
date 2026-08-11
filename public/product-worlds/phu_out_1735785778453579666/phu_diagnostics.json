@@ -1,0 +1,37 @@
+{
+  "errors": [],
+  "warnings": [
+    "reviews.has_more=true -> only the first page is here. The star-rating filter dropdown pulls a different real sample per star value (see SKILL.md \"Curated review sample\" — it is a UI control, not a scrollable list)."
+  ],
+  "state_scripts_present": [
+    "__MODERN_ROUTER_DATA__",
+    "__MODERN_SSR_DATA__"
+  ],
+  "loader_keys": [
+    "layout",
+    "(region)/pdp/(product_name_slug$)/(product_id)/page"
+  ],
+  "loader_key_used": "(region)/pdp/(product_name_slug$)/(product_id)/page",
+  "components": [
+    "user_info",
+    "page_header",
+    "bread_crumbs*",
+    "product_info*",
+    "shop_info",
+    "alternative_product",
+    "feed_list",
+    "feed_list",
+    "expose_pool"
+  ],
+  "surface": "storefront",
+  "counts": {
+    "images": 8,
+    "gallery": 4,
+    "variants": 1,
+    "reviews_captured": 3,
+    "reviews_total": "86"
+  },
+  "extracted_at": "2026-08-11T05:36:47.446Z",
+  "url": "https://shop.tiktok.com/mx/pdp/1735785778453579666",
+  "ok": true
+}

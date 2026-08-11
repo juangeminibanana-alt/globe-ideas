@@ -1,0 +1,37 @@
+{
+  "doc": "source-repository\\docs\\phu_IMAGE_EDITING_API.md",
+  "detections": [
+    {
+      "path": ".\\phu_images\\gallery\\gallery_01.jpg",
+      "name": "gallery_01.jpg",
+      "suspect": false,
+      "score": 0.0,
+      "reasons": []
+    },
+    {
+      "path": ".\\phu_images\\gallery\\gallery_02.jpg",
+      "name": "gallery_02.jpg",
+      "suspect": false,
+      "score": 0.0,
+      "reasons": []
+    },
+    {
+      "path": ".\\phu_images\\gallery\\gallery_03.jpg",
+      "name": "gallery_03.jpg",
+      "suspect": false,
+      "score": 0.0,
+      "reasons": []
+    },
+    {
+      "path": ".\\phu_images\\gallery\\gallery_04.jpg",
+      "name": "gallery_04.jpg",
+      "suspect": false,
+      "score": 0.0,
+      "reasons": []
+    }
+  ],
+  "n_suspect": 0,
+  "cleaned": [],
+  "audits": [],
+  "status": "skip_no_watermark"
+}

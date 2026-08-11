@@ -1,0 +1,59 @@
+Generate a professional Product / Subject Bible sheet, strictly matching this layout format:
+- Clean light background with fine grid lines, modular sections.
+- Top left: Subject name in ALL CAPS + short role or category subtitle.
+- Left column: Base info (ROLE / CATEGORY, SCALE, KEY TRAITS) with simple icons.
+- Center large area: Full front view + full reverse / side view, neutral product presentation, clean background.
+- Right area: DETAIL STUDIES (3–4 angles or close-ups) + STATE / VARIATION SHEET (4 key presentation states) + KEY SIGNATURE DETAIL.
+- Bottom left: DETAIL CALLOUTS (3 tight close-ups of critical features).
+- Bottom center: COLOR PALETTE (6 swatches + exact hex values).
+- Bottom right: SIGNATURE / MARKING area (brand or product name lockup text only — no fake barcodes).
+
+Art style: hyper-real product photography, catalog bible sheet, controlled studio lighting, high material fidelity, gentle depth of field.
+
+Subject setup:
+NAME: ABZ SOMBRERO DE MAESTRO NEGRO CON DETALLES EN…
+SUBTITLE: ABZ Sombrero de Maestro Negro con Detalles en Rosa y Blanco para · Accesorios de moda / Accesorios para ropa / Sombreros
+ROLE / CATEGORY: Accesorios de moda / Accesorios para ropa / Sombreros · Seller: sas10001
+SCALE: Physical product as in gallery hero shots; package approx 26×15×18 (listing units); weight 120 (listing units). Use human hand scale from refs if shown. Do not invent unlisted size labels.
+KEY TRAITS: Match silhouette and proportions exactly from reference photos; Match primary colors and surface finish from references; Preserve all logos, prints, labels, and hardware visible in refs; No redesign, no alternate colorways, no invented branding
+
+DETAIL STUDIES:
+1. FRONT — Full frontal product view matching the primary gallery hero; clean background; true colors and logos
+2. 3/4 VIEW — Three-quarter angle showing depth, edges, and side surface details present in references
+3. PROFILE / REVERSE — Side or rear view only if supported by references; otherwise alternate 3/4 from gallery
+4. DETAIL ANGLE — Close study of the most distinctive feature visible in references (logo, texture, hardware, print)
+
+STATE / VARIATION SHEET:
+1. DEFAULT / RESTING — Product alone, neutral studio light, soft shadow, hero angle from refs
+2. ACTIVE / ENGAGED — Slight dynamic tilt or hand-supported presentation as in UGC-style refs if present
+3. HIGHLIGHT / FEATURED — Macro-forward of the key distinguishing detail from references
+4. HAND SCALE — Fingers supporting the product for scale when lifestyle/hand refs exist; NOT invent packaging
+
+KEY SIGNATURE DETAIL: Only elements attached to or clearly part of the product in references. Do not invent detachable accessories or packaging not shown.
+
+DETAIL CALLOUTS:
+1. Primary logo / brand mark / front face graphic — match references exactly
+2. Secondary material or texture zone (fabric, metal, plastic, stitch, print) from refs
+3. Edge / hardware / closure / critical small detail unique to this listing
+
+COLOR PALETTE:
+Tone A #F0F0F0
+Tone B #181818
+Tone C #000000
+Tone D #303030
+Tone E #D8D8D8
+Tone F #C0A8C0
+
+Bottom info bar:
+TITLE: ABZ SOMBRERO DE MAESTRO NEGRO CON DETALLES EN… — Product Bible | FORMAT: 16:9 landscape | STYLE: hyper-real catalog product sheet | NOTES: Locked master reference for absolute visual consistency | PROD NOTES: Locked master for this listing only. Title context: ABZ Sombrero de Maestro Negro con Detalles en Rosa y Blanco para Estilo Único. Copy materials, proportions, colors, logos, and surface detail solely from reference images. Do not invent logos, characters, stickers, colorways, or packaging absent from refs. No retail packaging in master set. Category: Accesorios de moda / Accesorios para ropa / Sombreros. Gallery frames available: 4.
+
+CRITICAL PERSONALIZATION RULES (this product only):
+- Depict THIS listing's product only, as shown in references. No unrelated garments or lifestyle clutter.
+- DO NOT invent retail packaging, hangtags, or polybags — not part of the master visual set.
+- DO NOT invent extra colorways or remove logos/details present in references.
+- Typography, embroidery, prints, and hardware must stay consistent with references.
+- Output must be a single 16:9 Product Bible sheet, readable labels, high fidelity.
+- Full listing title (context, do not invent beyond refs): ABZ Sombrero de Maestro Negro con Detalles en Rosa y Blanco para Estilo Único
+
+
+VISUAL LOCK: Use <IMAGE_0> as the ONLY master product photography references (white-background ref sheets of the real product). Match materials, logos, colors, textures, and proportions exactly. Do not redesign the product.

@@ -1,0 +1,27 @@
+{
+  "schema_version": "1.0",
+  "product_id": "1735785778453579666",
+  "name": "Gorra ABZ",
+  "portable": true,
+  "included": {
+    "research": true,
+    "original_product_images": true,
+    "transparent_product_images": true,
+    "approved_product_bible": true,
+    "video_10s_1080p": true,
+    "video_15s_1080p": true,
+    "video_reference_images": true,
+    "prompts_and_job_metadata": true,
+    "qa_reports": true
+  },
+  "excluded": [
+    "raw_720p_video",
+    "rejected_qa_candidates",
+    "obsolete_product_bibles",
+    "execution_logs",
+    "captured_page_html",
+    "machine_specific_paths",
+    "signed_source_urls",
+    "review_sample_identifiers"
+  ]
+}

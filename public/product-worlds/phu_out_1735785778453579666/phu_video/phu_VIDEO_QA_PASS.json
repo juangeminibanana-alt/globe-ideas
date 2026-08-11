@@ -1,0 +1,22 @@
+{
+  "schema_version": "1.0",
+  "checked_at": "2026-08-11T00:37:29.8534705-06:00",
+  "status": "pass",
+  "artifact": "phu_product_hold_maxrefs_10s_1080p.mp4",
+  "checks": {
+    "full_decode": "pass",
+    "duration_10_seconds": "pass",
+    "frame_count_300": "pass",
+    "resolution_1080x1920": "pass",
+    "audio_aac_stereo": "pass",
+    "single_product": "pass",
+    "background_option_6": "pass",
+    "hands_visible": "pass",
+    "hard_cut_boundaries": "pass",
+    "no_ghosting_or_double_exposure": "pass",
+    "no_consecutive_duplicate_frames": "pass",
+    "no_sustained_freezes": "pass"
+  },
+  "cut_points_seconds": [2.2, 4.5, 6.8, 8.5],
+  "notes": "Stable slow-motion cadence. Low-motion micro-holds are at most 0.20 seconds. The original AAC track contains an approximately 4.29-7.65 second silent passage but is present and decodes correctly."
+}

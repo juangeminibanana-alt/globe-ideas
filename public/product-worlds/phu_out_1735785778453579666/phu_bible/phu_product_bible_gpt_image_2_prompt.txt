@@ -1,0 +1,18 @@
+PRODUCT BIBLE TECHNICAL WORKFLOW / REV. 03
+
+GPT IMAGE 2 DRAFT REQUEST
+Use case: product-mockup.
+Create a strict 16:9 technical Product Bible photography plate from the real product references. Use a pure white studio background. Show complete front, three-quarter, side/posterior and interior views, plus faithful macro details. Preserve the exact ABZ embroidery, printed panels, brim motifs, seams, interior tape, underside dragon graphics, colors and proportions. Reserve annotation space. No people, props, packaging, invented text, measurements, materials, graphics, hardware or product redesign.
+
+STRICT QA RESULT
+The generated product-pixel draft was rejected because small graphics, interior tape and closure construction drifted from the source photographs.
+
+APPROVED FINAL ASSEMBLY
+Use only original pixels from five unique extracted photos:
+- gallery_01.jpg: front
+- gallery_02.jpg: three-quarter
+- gallery_03.jpg: side A
+- description/desc_03.jpg: side B
+- gallery_04.jpg: interior and brim reverse
+
+Add deterministic Spanish typography and technically correct A-D measurement guides. Do not invent values. Mark front crown width, crown height and brim length as "NO PUBLICADO · POR MEDIR". Mark inner circumference as "RANGO NO PUBLICADO". State "MATERIAL / COMPOSICIÓN: NO DECLARADO POR EL VENDEDOR". Show package-logistics values 26 × 15 × 18 and weight 120 without inferred units, explicitly warning that they are not confirmed cap dimensions.

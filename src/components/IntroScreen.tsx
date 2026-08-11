@@ -1,197 +1,91 @@
-import { Camera, Upload, ArrowRight } from 'lucide-react';
-import { useRef, useState } from 'react';
-
-declare global {
-  interface Window {
-    aistudio?: {
-      openSelectKey?: () => Promise<boolean | void>;
-    };
-  }
-}
+import { ArrowRight, Database, Sparkles } from 'lucide-react';
+import { CONTENT_NODES, PRODUCT } from '../productData';
 
 interface IntroScreenProps {
-  onStart: (photoBase64: string) => void;
+  onStart: () => void;
 }
 
 export default function IntroScreen({ onStart }: IntroScreenProps) {
-  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
-  const fileInputRef = useRef<HTMLInputElement>(null);
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [useCamera, setUseCamera] = useState(false);
-  const [hasLinkedKey, setHasLinkedKey] = useState(false);
-
-  const handleStart = async (url: string) => {
-    // if (!hasLinkedKey) {
-    //   if (window.aistudio && window.aistudio.openSelectKey) {
-    //     const success = await window.aistudio.openSelectKey();
-    //     if (success !== false) {
-    //       setHasLinkedKey(true);
-    //       onStart(url);
-    //     }
-    //     return;
-    //   }
-    // }
-    onStart(url);
-  };
-
-  const startCamera = async () => {
-    try {
-      setUseCamera(true);
-      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-      if (videoRef.current) {
-        videoRef.current.srcObject = stream;
-        videoRef.current.play();
-      }
-    } catch (e) {
-      console.error("Camera access denied", e);
-      setUseCamera(false);
-    }
-  };
-
-  const takePhoto = () => {
-    if (videoRef.current && canvasRef.current) {
-      const w = videoRef.current.videoWidth;
-      const h = videoRef.current.videoHeight;
-      canvasRef.current.width = w;
-      canvasRef.current.height = h;
-      const ctx = canvasRef.current.getContext('2d');
-      if (ctx) {
-        ctx.drawImage(videoRef.current, 0, 0, w, h);
-        const dataUrl = canvasRef.current.toDataURL('image/jpeg');
-        setPreviewUrl(dataUrl);
-        stopCamera();
-      }
-    }
-  };
-
-  const stopCamera = () => {
-    if (videoRef.current && videoRef.current.srcObject) {
-      const stream = videoRef.current.srcObject as MediaStream;
-      stream.getTracks().forEach(track => track.stop());
-    }
-    setUseCamera(false);
-  };
-
-  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        setPreviewUrl(event.target?.result as string);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
-  const loadTestImage = async () => {
-    try {
-      const res = await fetch('/new-test.png');
-      const blob = await res.blob();
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        setPreviewUrl(e.target?.result as string);
-      };
-      reader.readAsDataURL(blob);
-    } catch (err) {
-      console.error('Failed to load test image', err);
-    }
-  };
-
   return (
-    <div className="flex flex-col items-center w-full h-full max-w-md mx-auto p-6 font-sans text-center overflow-y-auto">
-      <div className="flex-grow flex-shrink-0 flex flex-col items-center justify-center w-full py-4">
-        <h1 className={`text-[55px] font-bold font-display tracking-tight mb-2 text-gray-900 leading-none ${useCamera ? 'hidden' : previewUrl ? 'hidden md:block' : ''}`}>anywhere</h1>
-        <p className={`text-sm text-gray-500 mb-8 lowercase tracking-wide ${useCamera ? 'hidden' : previewUrl ? 'hidden md:block' : ''}`}>add your photos and visualize yourself anywhere</p>
-        
-        {!previewUrl && !useCamera && (
-        <div className="flex flex-col gap-4 w-full">
-          <button 
-            onClick={startCamera}
-            className="flex items-center justify-center gap-3 w-full py-4 px-6 border border-solid border-gray-900 text-gray-900 bg-white hover:bg-gray-50 transition-colors uppercase tracking-widest text-sm font-medium rounded-none"
-          >
-            <Camera className="w-5 h-5" />
-            Click a photo
-          </button>
-          
-          <button 
-            onClick={() => fileInputRef.current?.click()}
-            className="flex items-center justify-center gap-3 w-full py-4 px-6 border border-solid border-gray-900 text-gray-900 bg-white hover:bg-gray-50 transition-colors uppercase tracking-widest text-sm font-medium rounded-none"
-          >
-            <Upload className="w-5 h-5" />
-            Upload a photo
-          </button>
-          
-          <p className="mt-2 text-[10px] text-gray-400 text-center w-full">
-            By using this feature, you confirm that you have the necessary rights to any content that you upload. Do not generate content that infringes on others’ intellectual property or privacy rights. Your use of this generative AI service is subject to our <a href="https://policies.google.com/terms/generative-ai/use-policy" target="_blank" rel="noopener noreferrer" className="underline hover:text-gray-600 transition-colors">Prohibited Use Policy</a>.
-            <br /><br />
-            Please note that uploads from Google Workspace may be used to develop and improve Google products and services in accordance with our <a href="https://ai.google.dev/gemini-api/terms" target="_blank" rel="noopener noreferrer" className="underline hover:text-gray-600 transition-colors">terms</a>.
-          </p>
-          <input 
-            type="file" 
-            accept="image/*" 
-            className="hidden" 
-            ref={fileInputRef} 
-            onChange={handleFileUpload} 
-          />
-        </div>
-      )}
-
-      {useCamera && !previewUrl && (
-        <div className="flex flex-col items-center gap-4 w-full">
-          <div className="relative w-full aspect-[3/4] max-h-[50vh] bg-gray-100 border border-gray-900 overflow-hidden rounded-none">
-            <video ref={videoRef} className="object-cover w-full h-full" playsInline muted />
+    <main className="product-grid h-full w-full overflow-y-auto px-5 py-6 md:px-10 md:py-8 lg:px-16">
+      <div className="mx-auto flex min-h-full max-w-[1500px] flex-col">
+        <header className="flex items-center justify-between border-b border-app-border/80 pb-5">
+          <div className="flex items-center gap-3">
+            <div className="grid size-11 place-items-center border border-app-border text-2xl text-app-muted">◎</div>
+            <div>
+              <p className="font-display text-2xl font-bold uppercase leading-none tracking-[0.04em]">Product World</p>
+              <p className="mt-1 font-mono text-[9px] uppercase tracking-[0.2em] text-app-muted">UGC research system</p>
+            </div>
           </div>
-          <button 
-            onClick={takePhoto}
-            className="flex items-center justify-center gap-3 w-full py-4 px-6 border border-solid border-gray-900 text-white bg-gray-900 hover:bg-black transition-colors uppercase tracking-widest text-sm font-medium rounded-none"
-          >
-            <Camera className="w-5 h-5" />
-            Capture Shape
-          </button>
-          <button 
-            onClick={stopCamera}
-            className="text-xs uppercase tracking-widest text-gray-500 hover:text-gray-900 mt-2"
-          >
-            Cancel
-          </button>
-        </div>
-      )}
-
-      {previewUrl && (
-        <div className="flex flex-col items-center gap-6 w-full animate-in fade-in zoom-in duration-500">
-          <div className="w-48 aspect-[3/4] border border-gray-900 rounded-none overflow-hidden bg-gray-100">
-            <img src={previewUrl} alt="Preview" className="w-full h-full object-cover" />
+          <div className="hidden items-center gap-2 font-mono text-[10px] uppercase tracking-[0.18em] text-app-accent sm:flex">
+            <span className="size-1.5 bg-app-accent" />
+            Extracción lista
           </div>
-          
-          <button 
-            onClick={() => handleStart(previewUrl)}
-            className="flex items-center justify-center gap-3 w-full py-4 px-6 border border-solid border-gray-900 text-white bg-gray-900 hover:bg-black transition-colors uppercase tracking-widest text-sm font-medium rounded-none"
-          >
-            Let's go
-            <ArrowRight className="w-5 h-5" />
-          </button>
+        </header>
 
-          <button 
-            onClick={() => setPreviewUrl(null)}
-            className="text-xs uppercase tracking-widest text-gray-500 hover:text-gray-900"
-          >
-            Start over
-          </button>
-        </div>
-      )}
+        <section className="grid flex-1 items-center gap-10 py-10 lg:grid-cols-[1.05fr_0.95fr] lg:gap-16 lg:py-12">
+          <div className="max-w-3xl">
+            <div className="mb-6 flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.2em] text-product-accent">
+              <Sparkles className="size-4" />
+              Un producto · múltiples historias
+            </div>
+            <h1 className="max-w-3xl font-display text-[clamp(3.6rem,7.4vw,8.5rem)] font-bold uppercase leading-[0.82] tracking-[-0.035em] text-app-text">
+              Un mundo de contenido.
+            </h1>
+            <p className="mt-7 max-w-2xl text-base leading-relaxed text-app-muted md:text-lg">
+              La investigación de una sola chaqueta convertida en un mapa navegable de datos, detalles y ángulos UGC listos para desarrollar.
+            </p>
 
+            <div className="mt-8 grid max-w-2xl grid-cols-3 border-y border-app-border/80 py-5">
+              <IntroMetric value={String(CONTENT_NODES.length)} label="Nodos UGC" />
+              <IntroMetric value={PRODUCT.rating} label="Calificación" />
+              <IntroMetric value={PRODUCT.sold} label="Vendidos" />
+            </div>
+
+            <button
+              onClick={onStart}
+              className="group mt-8 flex w-full max-w-md items-center justify-between border border-product-accent bg-product-accent px-6 py-4 font-mono text-xs font-semibold uppercase tracking-[0.16em] text-[#090b0e] transition-colors hover:border-app-text hover:bg-app-text"
+            >
+              Explorar mundo UGC
+              <ArrowRight className="size-5 transition-transform group-hover:translate-x-1" />
+            </button>
+
+            <p className="mt-5 flex max-w-xl items-start gap-2 font-mono text-[9px] uppercase leading-relaxed tracking-[0.12em] text-app-muted">
+              <Database className="mt-0.5 size-3.5 shrink-0 text-app-accent" />
+              Datos extraídos estáticamente. Los hooks, formatos y shot lists están marcados como propuestas creativas.
+            </p>
+          </div>
+
+          <div className="relative mx-auto w-full max-w-[560px] lg:mr-0">
+            <div className="absolute -left-5 top-8 hidden h-[82%] w-full border border-app-border/60 md:block" />
+            <div className="relative border border-app-border bg-app-surface p-3 shadow-[0_32px_90px_rgba(0,0,0,0.42)]">
+              <div className="relative aspect-[4/5] overflow-hidden bg-app-subtle">
+                <img src="/product/01_gallery.jpg" alt="Chaqueta de ante sintético color caramelo" className="h-full w-full object-cover" />
+                <div className="absolute inset-x-0 bottom-0 bg-[#07090d]/88 p-5 backdrop-blur-sm">
+                  <p className="font-mono text-[9px] uppercase tracking-[0.2em] text-product-accent">Producto investigado</p>
+                  <p className="mt-2 max-w-md text-lg font-semibold leading-tight text-app-text md:text-xl">{PRODUCT.shortName}</p>
+                  <div className="mt-4 flex items-end justify-between gap-4">
+                    <div>
+                      <p className="font-mono text-xl text-product-accent">{PRODUCT.price}</p>
+                      <p className="font-mono text-[10px] text-app-muted line-through">{PRODUCT.originalPrice}</p>
+                    </div>
+                    <div className="border border-product-accent px-3 py-2 font-mono text-xs text-product-accent">−{PRODUCT.discount}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
       </div>
+    </main>
+  );
+}
 
-      <canvas ref={canvasRef} className="hidden" />
-
-      {previewUrl && (
-        <p className="mt-auto pt-8 text-[10px] text-gray-400 text-center w-full max-w-sm hidden md:block">
-          By using this feature, you confirm that you have the necessary rights to any content that you upload. Do not generate content that infringes on others’ intellectual property or privacy rights. Your use of this generative AI service is subject to our <a href="https://policies.google.com/terms/generative-ai/use-policy" target="_blank" rel="noopener noreferrer" className="underline hover:text-gray-600 transition-colors">Prohibited Use Policy</a>.
-          <br /><br />
-          Please note that uploads from Google Workspace may be used to develop and improve Google products and services in accordance with our <a href="https://ai.google.dev/gemini-api/terms" target="_blank" rel="noopener noreferrer" className="underline hover:text-gray-600 transition-colors">terms</a>.
-        </p>
-      )}
+function IntroMetric({ value, label }: { value: string; label: string }) {
+  return (
+    <div className="border-l border-app-border/70 px-3 first:border-l-0 first:pl-0 md:px-6">
+      <p className="font-mono text-xl text-app-text md:text-2xl">{value}</p>
+      <p className="mt-1 font-mono text-[8px] uppercase tracking-[0.16em] text-app-muted md:text-[9px]">{label}</p>
     </div>
   );
 }

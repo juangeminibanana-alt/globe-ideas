@@ -1,0 +1,53 @@
+{
+  "schema_version": "1.0",
+  "revision": 3,
+  "approved_at": "2026-08-11T02:53:45.7910858-06:00",
+  "provider": "OpenAI GPT Image 2 assisted workflow",
+  "generation_route": "Codex imagegen draft plus deterministic Pillow assembly",
+  "canonical_for_r2v": true,
+  "output": "approved/phu_product_bible_technical_rev03_16x9.png",
+  "approved_copy": "approved/phu_product_bible_technical_rev03_16x9.png",
+  "width": 3840,
+  "height": 2160,
+  "background": "pure white technical catalog sheet",
+  "source_images": [
+    "phu_images/gallery/gallery_01.jpg",
+    "phu_images/gallery/gallery_02.jpg",
+    "phu_images/gallery/gallery_03.jpg",
+    "phu_images/description/desc_03.jpg",
+    "phu_images/gallery/gallery_04.jpg"
+  ],
+  "source_integrity": "Every product view and detail crop in the approved image uses original extracted-photo pixels. GPT Image 2 product redraws were rejected after strict QA.",
+  "views": [
+    "front",
+    "front_three_quarter",
+    "side_a",
+    "side_b",
+    "interior_and_brim_reverse"
+  ],
+  "detail_crops": [
+    "ABZ embroidery",
+    "brim embroidery",
+    "printed side panel",
+    "interior seam tape",
+    "dragon graphics under brim"
+  ],
+  "measurements": {
+    "product_dimensions_available": false,
+    "A": "front crown width - not published, physical measurement required",
+    "B": "crown height - not published, physical measurement required",
+    "C": "brim length - not published, physical measurement required",
+    "D": "inner circumference - range not published"
+  },
+  "materials": "Composition not declared by seller; only visible construction is described.",
+  "package_logistics": {
+    "length": 26,
+    "width": 15,
+    "height": 18,
+    "weight": 120,
+    "units": "not identified in the extracted data",
+    "warning": "These are package-logistics values, not confirmed cap dimensions."
+  },
+  "qa_status": "pass",
+  "qa_notes": "Five complete real-photo views, five real-photo detail crops, technically correct A-D measurement guides, no invented dimensions, materials, graphics or hardware."
+}

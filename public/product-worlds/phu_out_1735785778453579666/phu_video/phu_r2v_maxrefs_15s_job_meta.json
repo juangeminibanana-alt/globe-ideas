@@ -1,0 +1,57 @@
+{
+  "schema_version": "1.0",
+  "request_id": null,
+  "model": "grok-imagine-video-1.5",
+  "duration": 15,
+  "aspect_ratio": "9:16",
+  "resolution_api": "720p",
+  "mode": "reference_images",
+  "n_refs": 6,
+  "refs": [
+    {
+      "index": 1,
+      "role": "front_full",
+      "path": ".\\phu_video\\phu_refs_r2v_16x9\\phu_r2v_ref_01_front_full.jpg"
+    },
+    {
+      "index": 2,
+      "role": "front_macro",
+      "path": ".\\phu_video\\phu_refs_r2v_16x9\\phu_r2v_ref_02_detail_macro_front.jpg"
+    },
+    {
+      "index": 3,
+      "role": "front_three_quarter",
+      "path": ".\\phu_video\\phu_refs_r2v_16x9\\phu_r2v_ref_03_gallery_02.jpg"
+    },
+    {
+      "index": 4,
+      "role": "side_a",
+      "path": ".\\phu_video\\phu_refs_r2v_16x9\\phu_r2v_ref_04_gallery_03.jpg"
+    },
+    {
+      "index": 5,
+      "role": "side_b",
+      "path": ".\\phu_images\\description\\desc_03.jpg"
+    },
+    {
+      "index": 6,
+      "role": "interior_underside",
+      "path": ".\\phu_video\\phu_refs_r2v_16x9\\phu_r2v_ref_05_gallery_04.jpg"
+    }
+  ],
+  "prompt_file": "phu_r2v_maxrefs_15s_prompt_used.txt",
+  "raw": null,
+  "final_1080p": ".\\phu_video\\phu_product_hold_maxrefs_15s_1080p.mp4",
+  "raw_status": "omitted_from_portable_bundle",
+  "auth": "redacted_from_portable_bundle",
+  "technical": {
+    "path": ".\\phu_video\\phu_product_hold_maxrefs_15s_1080p.mp4",
+    "duration": 15.0,
+    "width": 1080,
+    "height": 1920,
+    "fps": "30/1",
+    "video_codec": "h264",
+    "audio_codec": "aac",
+    "size": 15604684
+  }
+}

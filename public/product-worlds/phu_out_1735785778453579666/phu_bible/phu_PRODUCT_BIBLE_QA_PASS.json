@@ -1,0 +1,24 @@
+{
+  "schema_version": "1.0",
+  "checked_at": "2026-08-11T02:53:45.7910858-06:00",
+  "status": "pass",
+  "artifact": "approved/phu_product_bible_technical_rev03_16x9.png",
+  "revision": 3,
+  "checks": {
+    "canvas_3840x2160": "pass",
+    "pure_white_background": "pass",
+    "five_complete_real_photo_views": "pass",
+    "five_real_photo_detail_crops": "pass",
+    "brand_and_graphics_source_fidelity": "pass",
+    "no_invented_hardware": "pass",
+    "measurement_guide_A_front_crown_width": "pass",
+    "measurement_guide_B_crown_height": "pass",
+    "measurement_guide_C_brim_length": "pass",
+    "measurement_guide_D_inner_circumference": "pass",
+    "no_invented_product_dimensions": "pass",
+    "material_composition_not_overstated": "pass",
+    "package_logistics_separated_from_product_dimensions": "pass",
+    "spanish_copy_legible_and_deterministic": "pass"
+  },
+  "notes": "The GPT Image 2 product-redraw draft was rejected. The approved sheet uses only original extracted-photo pixels for product imagery and deterministic technical annotations."
+}

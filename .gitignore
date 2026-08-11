@@ -6,3 +6,7 @@ coverage/
 *.log
 .env*
 !.env.example
+
+# Generated Python cache
+__pycache__/
+*.pyc
