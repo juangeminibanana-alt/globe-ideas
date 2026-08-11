@@ -1,21 +1,8 @@
-@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=MuseoModerno:wght@400;700&display=swap');
 @import "tailwindcss";
 
 @theme {
-  --font-display: "Barlow Condensed", "Arial Narrow", sans-serif;
-  --font-mono: "IBM Plex Mono", Consolas, monospace;
-  --color-app-bg: #05080c;
-  --color-app-surface: #0a1016;
-  --color-app-subtle: #101820;
-  --color-app-text: #f4f7fa;
-  --color-app-muted: #929cab;
-  --color-app-border: #263440;
-  --color-app-accent: #68e7ff;
-  --color-product-accent: #ff7da9;
-}
-
-:root {
-  color-scheme: dark;
+  --font-display: "MuseoModerno", sans-serif;
 }
 
 html, body, #root {
@@ -25,122 +12,5 @@ html, body, #root {
   padding: 0;
   overflow: hidden;
   overscroll-behavior: none;
-  background-color: var(--color-app-bg);
-  color: var(--color-app-text);
-}
-
-body {
-  background-image:
-    radial-gradient(circle at 50% 18%, rgba(104, 231, 255, 0.05), transparent 34%),
-    linear-gradient(180deg, #080b10 0%, var(--color-app-bg) 55%, #05070a 100%);
-  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-}
-
-button {
-  cursor: pointer;
-}
-
-::selection {
-  background: rgba(125, 227, 255, 0.24);
-  color: var(--color-app-text);
-}
-
-:where(button, a, input):focus-visible {
-  outline: 2px solid var(--color-app-accent);
-  outline-offset: 4px;
-}
-
-* {
-  scrollbar-color: var(--color-app-border) var(--color-app-bg);
-}
-
-.gallery-globe-shell {
-  background:
-    radial-gradient(circle at 50% 48%, rgba(104, 231, 255, 0.1), transparent 34%),
-    radial-gradient(circle at 22% 78%, rgba(255, 125, 169, 0.05), transparent 24%),
-    linear-gradient(180deg, #070b10 0%, #030609 100%);
-}
-
-.galaxy-world-shell {
-  isolation: isolate;
-  background:
-    radial-gradient(ellipse at 29% 52%, rgba(13, 126, 167, 0.2) 0%, rgba(4, 31, 51, 0.1) 24%, transparent 48%),
-    radial-gradient(ellipse at 84% 68%, rgba(91, 51, 151, 0.13) 0%, transparent 38%),
-    radial-gradient(ellipse at 58% 12%, rgba(31, 86, 126, 0.09) 0%, transparent 30%),
-    linear-gradient(180deg, #010309 0%, #02060c 54%, #010308 100%);
-}
-
-.galaxy-world-shell::before {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  content: "";
-  pointer-events: none;
-  background-image:
-    radial-gradient(circle at 7% 16%, rgba(255, 255, 255, 0.85) 0 1px, transparent 1.7px),
-    radial-gradient(circle at 18% 72%, rgba(99, 223, 255, 0.8) 0 0.8px, transparent 1.5px),
-    radial-gradient(circle at 41% 26%, rgba(255, 255, 255, 0.72) 0 0.8px, transparent 1.4px),
-    radial-gradient(circle at 67% 81%, rgba(185, 158, 255, 0.72) 0 1px, transparent 1.6px),
-    radial-gradient(circle at 91% 34%, rgba(255, 255, 255, 0.78) 0 0.9px, transparent 1.5px);
-  background-size: 181px 167px, 239px 211px, 197px 223px, 281px 263px, 313px 277px;
-  opacity: 0.65;
-}
-
-.galaxy-world-shell canvas {
-  position: relative;
-  z-index: 1;
-}
-
-.galaxy-world-label {
-  text-shadow: 0 2px 10px #000, 0 0 14px rgba(0, 0, 0, 0.95);
-  transition: color 160ms ease, text-shadow 160ms ease;
-}
-
-.galaxy-world-label:hover,
-.galaxy-world-label:focus-visible {
-  color: #8ef2ff;
-  text-shadow: 0 2px 10px #000, 0 0 13px rgba(52, 217, 255, 0.86);
-}
-
-.product-grid {
-  background:
-    linear-gradient(rgba(40, 48, 59, 0.13) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(40, 48, 59, 0.13) 1px, transparent 1px),
-    radial-gradient(circle at 78% 48%, rgba(255, 125, 169, 0.07), transparent 30%),
-    #07090d;
-  background-size: 48px 48px, 48px 48px, auto, auto;
-}
-
-.bg-grid-faint {
-  background:
-    linear-gradient(rgba(38, 52, 64, 0.22) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(38, 52, 64, 0.22) 1px, transparent 1px),
-    #060a0f;
-  background-size: 28px 28px;
-}
-
-.inspector-panel {
-  box-shadow: -18px 0 60px rgba(0, 0, 0, 0.28);
-}
-
-.code-preview {
-  scrollbar-gutter: stable;
-}
-
-.loading-scan {
-  animation: loading-scan 1.2s ease-in-out infinite;
-}
-
-@keyframes loading-scan {
-  from { transform: translateX(-110%); }
-  to { transform: translateX(220%); }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    scroll-behavior: auto !important;
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
+  background-color: #ffffff;
 }
