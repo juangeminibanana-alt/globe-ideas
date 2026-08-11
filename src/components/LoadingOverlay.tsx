@@ -1,39 +1,13 @@
-import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
+import { LoaderCircle } from 'lucide-react';
 
-const LOADING_TEXTS = [
-  "Generating your travel experience..."
-];
-
-export default function LoadingOverlay({ onComplete }: { onComplete: () => void }) {
-  const [index, setIndex] = useState(0);
-
-  useEffect(() => {
-    const timeout = setTimeout(() => {
-      onComplete();
-    }, 1500); // 1.5 seconds
-
-    return () => clearTimeout(timeout);
-  }, [onComplete]);
-
+export default function LoadingOverlay({ label = 'Cargando resultados' }: { label?: string }) {
   return (
-    <div className="absolute inset-0 z-40 bg-white flex items-center justify-center pointer-events-none w-full">
-      <div className="text-center w-full px-4">
-        <div className="h-8 relative flex items-center justify-center w-full">
-          <AnimatePresence mode="popLayout">
-            {index < LOADING_TEXTS.length ? (
-              <motion.p
-                key={index}
-                initial={{ opacity: 0, y: 10, filter: 'blur(4px)' }}
-                animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-                exit={{ opacity: 0, y: -10, filter: 'blur(4px)' }}
-                transition={{ duration: 0.4 }}
-                className="text-gray-500 font-mono text-sm tracking-widest uppercase absolute whitespace-nowrap text-center"
-              >
-                {LOADING_TEXTS[index]}
-              </motion.p>
-            ) : null}
-          </AnimatePresence>
+    <div className="product-grid grid h-full w-full place-items-center bg-app-bg px-4">
+      <div className="text-center">
+        <LoaderCircle className="mx-auto size-8 animate-spin text-app-accent" />
+        <p className="mt-4 font-mono text-xs uppercase tracking-[0.2em] text-app-muted">{label}</p>
+        <div className="mx-auto mt-4 h-px w-32 overflow-hidden bg-app-border">
+          <div className="loading-scan h-full w-1/2 bg-product-accent" />
         </div>
       </div>
     </div>
