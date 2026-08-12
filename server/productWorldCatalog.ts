@@ -9,6 +9,13 @@ import {
   type RequestHandler,
   type Response,
 } from 'express';
+import {
+  evaluatePhuVideoQa,
+  isPrivatePhuProductionArtifact,
+  listAllowedPhuProductionArtifacts,
+  listAllowedPhuRejectedVideoArtifacts,
+  loadPhuVideoQaPolicy,
+} from './phuProductionArtifacts';
 
 const API_BASE = '/api/product-worlds';
 const ACTIVE_FAST_TRACK_ROOT = path.resolve(
@@ -156,6 +163,18 @@ interface RegisteredFile {
 interface CatalogSnapshot {
   builtAt: number;
   worlds: CatalogWorldInternal[];
+}
+
+export interface ProductWorldLookup {
+  id: string;
+  productId: string;
+  name: string;
+  title: string;
+  heroUrl: string;
+  heroHasAlpha: boolean;
+  sourceCount: number;
+  updatedAt: string;
+  manifestUrl: string;
 }
 
 interface GenericArtifact extends RegisteredFile {
@@ -444,6 +463,30 @@ async function getCatalogSnapshot(force = false): Promise<CatalogSnapshot> {
   return catalogCache;
 }
 
+function publicCatalogWorld(world: CatalogWorldInternal): ProductWorldLookup {
+  return {
+    id: world.id,
+    productId: world.productId,
+    name: world.name,
+    title: world.title,
+    heroUrl: world.heroUrl,
+    heroHasAlpha: world.heroHasAlpha,
+    sourceCount: world.sourceCount,
+    updatedAt: world.updatedAt,
+    manifestUrl: world.manifestUrl,
+  };
+}
+
+export async function findProductWorldByProductId(
+  productId: string,
+  forceRefresh = true,
+): Promise<ProductWorldLookup | null> {
+  if (!/^\d{15,25}$/.test(productId)) return null;
+  const snapshot = await getCatalogSnapshot(forceRefresh);
+  const world = snapshot.worlds.find((candidate) => candidate.productId === productId);
+  return world ? publicCatalogWorld(world) : null;
+}
+
 function isFinalPhuVideo(filename: string): boolean {
   return /^phu_product_hold_/.test(filename)
     && /(?:^|[_-])(10|15)s(?:[_-]|\.)/.test(filename)
@@ -454,6 +497,23 @@ function isFinalPhuVideo(filename: string): boolean {
 function artifactRole(relativePath: string, extension: string): string {
   const value = relativePath.replaceAll('\\', '/').toLowerCase();
   const filename = path.basename(value);
+  if (value.startsWith('phu_video/qa_rejected_handoff_v1/')) {
+    return /(?:raw|720p)/.test(filename) ? 'source_video' : 'rejected_video';
+  }
+  if (value.startsWith('phu_production_15s/bibles/product-360/')) {
+    return extension === '.png' ? 'product_360_view' : 'product_360_data';
+  }
+  if (value === 'phu_production_15s/bibles/product-bible-visual.png') return 'product_bible';
+  if (value.startsWith('phu_production_15s/storyboard/')) {
+    return extension === '.png' ? 'storyboard' : filename.includes('prompt') ? 'prompt' : 'storyboard_data';
+  }
+  if (value.startsWith('phu_production_15s/handoff/')) return 'video_handoff';
+  if (value.startsWith('phu_production_15s/prompts/')) return 'prompt';
+  if (value === 'phu_production_15s/direction-sheet.png') return 'direction_sheet';
+  if (value.startsWith('phu_production_15s/bibles/')) {
+    return extension === '.png' ? 'product_bible' : 'product_bible_data';
+  }
+  if (value.startsWith('phu_production_15s/')) return 'production_metadata';
   if (filename.includes('product_extract')) return 'product_extract';
   if (filename.includes('normalized')) return 'normalized_data';
   if (filename.includes('diagnostic')) return 'diagnostics';
@@ -506,6 +566,10 @@ async function collectArtifactPaths(source: ProductSource): Promise<string[]> {
       : [source.rootPath, path.join(source.rootPath, 'images'), path.join(source.rootPath, 'sizechart')];
   const paths: string[] = [];
   for (const directory of directories) paths.push(...await filesIn(directory));
+  if (source.phu) {
+    paths.push(...await listAllowedPhuProductionArtifacts(source.rootPath));
+    paths.push(...await listAllowedPhuRejectedVideoArtifacts(source.rootPath));
+  }
   return [...new Set(paths)].filter((filePath) => Boolean(MIME_BY_EXTENSION[path.extname(filePath).toLowerCase()]));
 }
 
@@ -514,6 +578,7 @@ async function buildGenericArtifacts(world: CatalogWorldInternal): Promise<Gener
   const filePaths = await collectArtifactPaths(source);
   const artifacts: GenericArtifact[] = [];
   const seenImageDigests = new Set<string>();
+  const videoQaPolicy = await loadPhuVideoQaPolicy(source.rootPath);
 
   for (const filePath of filePaths) {
     if (artifacts.length >= MAX_MANIFEST_ARTIFACTS) break;
@@ -522,6 +587,8 @@ async function buildGenericArtifacts(world: CatalogWorldInternal): Promise<Gener
     if (!mimeType) continue;
     const fileStats = await stat(filePath);
     const kind = artifactKind(extension);
+    const relativePath = path.relative(source.rootPath, filePath);
+    if (videoQaPolicy.required && isPrivatePhuProductionArtifact(relativePath)) continue;
     const hasAlpha = kind === 'image' && extension === '.png'
       ? await pngHasAlpha(filePath)
       : false;
@@ -532,15 +599,26 @@ async function buildGenericArtifacts(world: CatalogWorldInternal): Promise<Gener
     }
 
     const registered = registerFile(filePath, mimeType, fileStats.size, fileStats.mtimeMs);
-    const relativePath = path.relative(source.rootPath, filePath);
     const filename = path.basename(filePath);
     const durationMatch = filename.match(/(?:^|[_-])(\d{1,3})s(?:[_\-.]|$)/i);
+    let role = artifactRole(relativePath, extension);
+    if (role === 'final_video') {
+      const qaStatus = await evaluatePhuVideoQa(
+        videoQaPolicy,
+        relativePath,
+        filePath,
+        fileStats.size,
+        fileStats.mtimeMs,
+      );
+      if (qaStatus === 'rejected') role = 'rejected_video';
+      else if (qaStatus === 'pending') role = 'video_result';
+    }
     artifacts.push({
       ...registered,
       filename,
       relativePath,
       kind,
-      role: artifactRole(relativePath, extension),
+      role,
       label: labelFromFilename(filename),
       durationSeconds: durationMatch ? Number(durationMatch[1]) : null,
       hasAlpha,
@@ -723,17 +801,7 @@ export function createProductWorldRouter(): Router {
     response.json({
       schemaVersion: '1.0',
       generatedAt: new Date(snapshot.builtAt).toISOString(),
-      worlds: snapshot.worlds.map((world) => ({
-        id: world.id,
-        productId: world.productId,
-        name: world.name,
-        title: world.title,
-        heroUrl: world.heroUrl,
-        heroHasAlpha: world.heroHasAlpha,
-        sourceCount: world.sourceCount,
-        updatedAt: world.updatedAt,
-        manifestUrl: world.manifestUrl,
-      })),
+      worlds: snapshot.worlds.map(publicCatalogWorld),
     });
   }));
 

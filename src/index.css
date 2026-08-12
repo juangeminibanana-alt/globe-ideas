@@ -16,6 +16,26 @@
 
 :root {
   color-scheme: dark;
+  --color-app-bg: #05080c;
+  --color-app-surface: #0a1016;
+  --color-app-subtle: #101820;
+  --color-app-text: #f4f7fa;
+  --color-app-muted: #929cab;
+  --color-app-border: #263440;
+  --color-app-accent: #68e7ff;
+  --color-product-accent: #ff7da9;
+}
+
+html.light, [data-theme="light"] {
+  color-scheme: light;
+  --color-app-bg: #f1f5f9;
+  --color-app-surface: #ffffff;
+  --color-app-subtle: #e2e8f0;
+  --color-app-text: #0f172a;
+  --color-app-muted: #475569;
+  --color-app-border: #cbd5e1;
+  --color-app-accent: #0284c7;
+  --color-product-accent: #db2777;
 }
 
 html, body, #root {
@@ -27,6 +47,7 @@ html, body, #root {
   overscroll-behavior: none;
   background-color: var(--color-app-bg);
   color: var(--color-app-text);
+  transition: background-color 200ms ease, color 200ms ease;
 }
 
 body {
@@ -34,6 +55,12 @@ body {
     radial-gradient(circle at 50% 18%, rgba(104, 231, 255, 0.05), transparent 34%),
     linear-gradient(180deg, #080b10 0%, var(--color-app-bg) 55%, #05070a 100%);
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+html.light body, [data-theme="light"] body {
+  background-image:
+    radial-gradient(circle at 50% 18%, rgba(2, 132, 199, 0.08), transparent 34%),
+    linear-gradient(180deg, #f8fafc 0%, var(--color-app-bg) 55%, #e2e8f0 100%);
 }
 
 button {
@@ -61,6 +88,13 @@ button {
     linear-gradient(180deg, #070b10 0%, #030609 100%);
 }
 
+html.light .gallery-globe-shell, [data-theme="light"] .gallery-globe-shell {
+  background:
+    radial-gradient(circle at 50% 48%, rgba(2, 132, 199, 0.08), transparent 34%),
+    radial-gradient(circle at 22% 78%, rgba(219, 39, 119, 0.04), transparent 24%),
+    linear-gradient(180deg, #f8fafc 0%, #edf2f7 100%);
+}
+
 .galaxy-world-shell {
   isolation: isolate;
   background:
@@ -68,6 +102,13 @@ button {
     radial-gradient(ellipse at 84% 68%, rgba(91, 51, 151, 0.13) 0%, transparent 38%),
     radial-gradient(ellipse at 58% 12%, rgba(31, 86, 126, 0.09) 0%, transparent 30%),
     linear-gradient(180deg, #010309 0%, #02060c 54%, #010308 100%);
+}
+
+html.light .galaxy-world-shell, [data-theme="light"] .galaxy-world-shell {
+  background:
+    radial-gradient(ellipse at 29% 52%, rgba(186, 230, 253, 0.5) 0%, rgba(224, 242, 254, 0.2) 24%, transparent 48%),
+    radial-gradient(ellipse at 84% 68%, rgba(244, 114, 182, 0.15) 0%, transparent 38%),
+    linear-gradient(180deg, #f1f5f9 0%, #e2e8f0 54%, #cbd5e1 100%);
 }
 
 .galaxy-world-shell::before {
@@ -86,6 +127,10 @@ button {
   opacity: 0.65;
 }
 
+html.light .galaxy-world-shell::before, [data-theme="light"] .galaxy-world-shell::before {
+  opacity: 0.25;
+}
+
 .galaxy-world-shell canvas {
   position: relative;
   z-index: 1;
@@ -96,10 +141,21 @@ button {
   transition: color 160ms ease, text-shadow 160ms ease;
 }
 
+html.light .galaxy-world-label, [data-theme="light"] .galaxy-world-label {
+  text-shadow: 0 1px 4px rgba(255, 255, 255, 0.9), 0 0 8px rgba(255, 255, 255, 0.8);
+  color: #0f172a;
+}
+
 .galaxy-world-label:hover,
 .galaxy-world-label:focus-visible {
   color: #8ef2ff;
   text-shadow: 0 2px 10px #000, 0 0 13px rgba(52, 217, 255, 0.86);
+}
+
+html.light .galaxy-world-label:hover,
+html.light .galaxy-world-label:focus-visible {
+  color: #0284c7;
+  text-shadow: 0 0 10px rgba(2, 132, 199, 0.5);
 }
 
 .product-grid {
@@ -111,6 +167,15 @@ button {
   background-size: 48px 48px, 48px 48px, auto, auto;
 }
 
+html.light .product-grid, [data-theme="light"] .product-grid {
+  background:
+    linear-gradient(rgba(203, 213, 225, 0.5) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(203, 213, 225, 0.5) 1px, transparent 1px),
+    radial-gradient(circle at 78% 48%, rgba(219, 39, 119, 0.05), transparent 30%),
+    #f8fafc;
+  background-size: 48px 48px, 48px 48px, auto, auto;
+}
+
 .bg-grid-faint {
   background:
     linear-gradient(rgba(38, 52, 64, 0.22) 1px, transparent 1px),
@@ -119,8 +184,20 @@ button {
   background-size: 28px 28px;
 }
 
+html.light .bg-grid-faint, [data-theme="light"] .bg-grid-faint {
+  background:
+    linear-gradient(rgba(203, 213, 225, 0.6) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(203, 213, 225, 0.6) 1px, transparent 1px),
+    #f1f5f9;
+  background-size: 28px 28px;
+}
+
 .inspector-panel {
   box-shadow: -18px 0 60px rgba(0, 0, 0, 0.28);
+}
+
+html.light .inspector-panel, [data-theme="light"] .inspector-panel {
+  box-shadow: -10px 0 30px rgba(0, 0, 0, 0.06);
 }
 
 .code-preview {

@@ -2,14 +2,17 @@ import express from 'express';
 import path from 'path';
 import { createServer as createViteServer } from 'vite';
 import { createFastTrackRouter } from './server/fastTrackAdapter';
+import { createProductImportJobsRouter } from './server/productImportJobs';
 import { createProductWorldRouter } from './server/productWorldCatalog';
 
 const PORT = Number(process.env.PORT) || 3000;
+const HOST = process.env.HOST || '127.0.0.1';
 
 async function startServer() {
   const app = express();
   app.disable('x-powered-by');
   app.use('/api/fast-track', createFastTrackRouter());
+  app.use('/api/product-worlds', createProductImportJobsRouter());
   app.use('/api/product-worlds', createProductWorldRouter());
 
   if (process.env.NODE_ENV !== 'production') {
@@ -26,8 +29,8 @@ async function startServer() {
     });
   }
 
-  app.listen(PORT, '0.0.0.0', () => {
-    console.log(`Product World ready at http://localhost:${PORT}`);
+  app.listen(PORT, HOST, () => {
+    console.log(`Product World ready at http://${HOST}:${PORT}`);
   });
 }
 

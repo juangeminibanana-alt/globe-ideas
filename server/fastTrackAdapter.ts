@@ -16,6 +16,13 @@ import {
   type RequestHandler,
   type Response,
 } from 'express';
+import {
+  evaluatePhuVideoQa,
+  isPrivatePhuProductionArtifact,
+  listAllowedPhuProductionArtifacts,
+  listAllowedPhuRejectedVideoArtifacts,
+  loadPhuVideoQaPolicy,
+} from './phuProductionArtifacts';
 
 export const DEFAULT_FAST_TRACK_OUT_ROOT =
   'D:\\Proyectos\\automatizacion\\product-hold-ugc\\out';
@@ -345,6 +352,9 @@ function artifactRole(relativePath: string, filename: string): string {
   const rel = relativePath.replaceAll('\\', '/').toLowerCase();
   const lower = filename.toLowerCase();
 
+  if (rel.startsWith('phu_video/qa_rejected_handoff_v1/')) {
+    return /(?:raw|720p)/.test(lower) ? 'source_video' : 'rejected_video';
+  }
   if (isFinalVideoFilename(filename)) return 'final_video';
   if (rel.startsWith('phu_video/') && /\.(mp4|webm|mov)$/.test(lower)) {
     return /(?:raw|720p|partial|noaudio|source_reference)/.test(lower)
@@ -370,6 +380,22 @@ function artifactRole(relativePath: string, filename: string): string {
   }
   if (rel.startsWith('phu_bible/')) return 'product_bible_data';
   if (rel.startsWith('phu_video/phu_refs_r2v_16x9/')) return 'video_reference';
+  if (rel.startsWith('phu_production_15s/bibles/product-360/')) {
+    return lower.endsWith('.png') ? 'product_360_view' : 'product_360_data';
+  }
+  if (rel === 'phu_production_15s/bibles/product-bible-visual.png') {
+    return 'product_bible';
+  }
+  if (rel.startsWith('phu_production_15s/storyboard/')) {
+    return lower.endsWith('.png') ? 'storyboard' : lower.includes('prompt') ? 'prompt' : 'storyboard_data';
+  }
+  if (rel.startsWith('phu_production_15s/handoff/')) return 'video_handoff';
+  if (rel.startsWith('phu_production_15s/prompts/')) return 'prompt';
+  if (rel === 'phu_production_15s/direction-sheet.png') return 'direction_sheet';
+  if (rel.startsWith('phu_production_15s/bibles/')) {
+    return lower.endsWith('.png') ? 'product_bible' : 'product_bible_data';
+  }
+  if (rel.startsWith('phu_production_15s/')) return 'production_metadata';
   if (lower === 'phu_product_extract.json') return 'product_extract';
   if (lower === 'phu_normalized.json') return 'normalized_data';
   if (lower === 'phu_raw.json') return 'raw_data';
@@ -411,6 +437,9 @@ function artifactPriority(artifact: ArtifactInternal): number {
     final_video: 0,
     gallery_image: 10,
     product_bible: 20,
+    product_360_view: 21,
+    storyboard: 22,
+    direction_sheet: 23,
     variant_image: 30,
     product_isolated: 35,
     description_image: 40,
@@ -419,6 +448,7 @@ function artifactPriority(artifact: ArtifactInternal): number {
     reference_sheet: 55,
     video_result: 60,
     source_video: 65,
+    rejected_video: 94,
     product_extract: 70,
     normalized_data: 71,
     run_brief: 72,
@@ -434,6 +464,8 @@ function artifactPriority(artifact: ArtifactInternal): number {
 
 async function listArtifacts(run: RunContext): Promise<ArtifactInternal[]> {
   const artifacts: ArtifactInternal[] = [];
+  const candidates: string[] = [];
+  const videoQaPolicy = await loadPhuVideoQaPolicy(run.absolutePath);
 
   for (const relativeDirectory of ARTIFACT_DIRECTORIES) {
     const directory = path.resolve(run.absolutePath, relativeDirectory);
@@ -448,48 +480,67 @@ async function listArtifacts(run: RunContext): Promise<ArtifactInternal[]> {
 
     for (const entry of entries) {
       if (!entry.isFile() || entry.isSymbolicLink()) continue;
-      const extension = path.extname(entry.name).toLowerCase();
-      const configuredMimeType = MIME_BY_EXTENSION[extension];
-      if (!configuredMimeType) continue;
+      candidates.push(path.join(directory, entry.name));
+    }
+  }
 
-      const candidate = path.join(directory, entry.name);
-      try {
-        const fileLinkStats = await lstat(candidate);
-        if (!fileLinkStats.isFile() || fileLinkStats.isSymbolicLink()) continue;
-        const resolved = await realpath(candidate);
-        if (!isPathInside(run.absolutePath, resolved)) continue;
-        const fileStats = await stat(resolved);
-        if (!fileStats.isFile()) continue;
-        const mimeType = await detectImageMime(resolved, extension, configuredMimeType);
+  candidates.push(...await listAllowedPhuProductionArtifacts(run.absolutePath));
+  candidates.push(...await listAllowedPhuRejectedVideoArtifacts(run.absolutePath));
 
-        const relativePath = path.relative(run.absolutePath, resolved).replaceAll('\\', '/');
-        const role = artifactRole(relativePath, entry.name);
-        const kind = artifactKind(extension);
-        const contentDigest = TRANSPARENT_SOURCE_ROLES.has(role)
-          ? createHash('sha256').update(await readFile(resolved)).digest('hex')
-          : null;
-        artifacts.push({
-          id: opaqueId('artifact', `${run.directoryName}/${relativePath}`),
-          runId: run.id,
-          absolutePath: resolved,
+  for (const candidate of [...new Set(candidates)]) {
+    const filename = path.basename(candidate);
+    const extension = path.extname(filename).toLowerCase();
+    const configuredMimeType = MIME_BY_EXTENSION[extension];
+    if (!configuredMimeType) continue;
+
+    try {
+      const fileLinkStats = await lstat(candidate);
+      if (!fileLinkStats.isFile() || fileLinkStats.isSymbolicLink()) continue;
+      const resolved = await realpath(candidate);
+      if (!isPathInside(run.absolutePath, resolved)) continue;
+      const fileStats = await stat(resolved);
+      if (!fileStats.isFile()) continue;
+      const mimeType = await detectImageMime(resolved, extension, configuredMimeType);
+
+      const relativePath = path.relative(run.absolutePath, resolved).replaceAll('\\', '/');
+      if (videoQaPolicy.required && isPrivatePhuProductionArtifact(relativePath)) continue;
+      let role = artifactRole(relativePath, filename);
+      if (role === 'final_video') {
+        const qaStatus = await evaluatePhuVideoQa(
+          videoQaPolicy,
           relativePath,
-          filename: entry.name,
-          extension,
-          mimeType,
-          kind,
-          renderMode: renderModeFor(kind),
-          role,
-          label: humanizeFilename(entry.name),
-          size: fileStats.size,
-          updatedAt: fileStats.mtime.toISOString(),
-          updatedAtMs: fileStats.mtimeMs,
-          durationSeconds: inferDurationSeconds(entry.name),
-          finalVideo: role === 'final_video',
-          contentDigest,
-        });
-      } catch {
-        // A running pipeline can replace a file between readdir and stat.
+          resolved,
+          fileStats.size,
+          fileStats.mtimeMs,
+        );
+        if (qaStatus === 'rejected') role = 'rejected_video';
+        else if (qaStatus === 'pending') role = 'video_result';
       }
+      const kind = artifactKind(extension);
+      const contentDigest = TRANSPARENT_SOURCE_ROLES.has(role)
+        ? createHash('sha256').update(await readFile(resolved)).digest('hex')
+        : null;
+      artifacts.push({
+        id: opaqueId('artifact', `${run.directoryName}/${relativePath}`),
+        runId: run.id,
+        absolutePath: resolved,
+        relativePath,
+        filename,
+        extension,
+        mimeType,
+        kind,
+        renderMode: renderModeFor(kind),
+        role,
+        label: humanizeFilename(filename),
+        size: fileStats.size,
+        updatedAt: fileStats.mtime.toISOString(),
+        updatedAtMs: fileStats.mtimeMs,
+        durationSeconds: inferDurationSeconds(filename),
+        finalVideo: role === 'final_video',
+        contentDigest,
+      });
+    } catch {
+      // A running pipeline can replace a file between readdir and stat.
     }
   }
 
@@ -1028,9 +1079,13 @@ function buildNodes(
   const mediaRoles = [
     'final_video',
     'source_video',
+    'rejected_video',
     'video_result',
-    'gallery_image',
     'product_bible',
+    'product_360_view',
+    'storyboard',
+    'direction_sheet',
+    'gallery_image',
     'variant_image',
     'description_image',
     'size_chart',
@@ -1041,9 +1096,13 @@ function buildNodes(
     const perRoleLimit: Record<string, number> = {
       final_video: 8,
       source_video: 8,
+      rejected_video: 2,
       video_result: 8,
       gallery_image: 10,
       product_bible: 2,
+      product_360_view: 8,
+      storyboard: 2,
+      direction_sheet: 1,
       variant_image: 5,
       description_image: 4,
       size_chart: 2,
@@ -1063,6 +1122,8 @@ function buildNodes(
           ? 'VIDEO FINAL ALTERNATIVO'
           : role === 'source_video'
             ? 'VIDEO FUENTE'
+            : role === 'rejected_video'
+              ? 'VIDEO RECHAZADO POR QA'
             : role === 'video_result'
               ? 'RESULTADO DE VIDEO'
               : 'ARTEFACTO EXTRAÍDO';

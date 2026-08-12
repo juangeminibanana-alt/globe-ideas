@@ -8,6 +8,10 @@ const SPHERE_GEOMETRY = new THREE.SphereGeometry(1, 40, 40);
 const WIRE_GEOMETRY = new THREE.SphereGeometry(1, 20, 14);
 const ORBIT_RING_COUNT = 5;
 const ORBIT_COLORS = ['#6cecff', '#49dcff', '#32cef4', '#27b9df', '#228fac'] as const;
+const LANDSCAPE_COMPOSITION_ASPECT = 16 / 9;
+const PORTRAIT_COMPOSITION_ASPECT = 9 / 16;
+const ORBIT_SPEED_RADIANS_PER_SECOND = 0.00035;
+const MAX_FRAME_DELTA_SECONDS = 0.05;
 
 export interface ProductWorldCanvasItem {
   id: string;
@@ -52,12 +56,12 @@ export default function ProductWorldCanvas({ worlds, onOpenWorld }: ProductWorld
   const reducedMotion = useReducedMotion() ?? false;
 
   return (
-    <div className="galaxy-world-shell relative h-full min-h-[100dvh] w-full overflow-hidden" aria-label="Galaxia de mundos de producto">
+    <div className="galaxy-world-shell relative h-full min-h-0 w-full overflow-hidden" aria-label="Galaxia de mundos de producto">
       <Canvas
         orthographic
         camera={{ position: [0, 0, 20], zoom: 72, near: 0.1, far: 100 }}
         dpr={[1, 1.5]}
-        gl={{ alpha: true, antialias: true, powerPreference: 'high-performance' }}
+        gl={{ alpha: true, antialias: true, preserveDrawingBuffer: true, powerPreference: 'high-performance' }}
         onCreated={({ gl }) => gl.setClearColor(0x000000, 0)}
       >
         <GalaxyScene
@@ -76,10 +80,21 @@ function GalaxyScene({
   onOpenWorld,
 }: ProductWorldCanvasProps & { reducedMotion: boolean }) {
   const viewport = useThree((state) => state.viewport);
-  const layout = useMemo(
-    () => createGalaxyLayout(worlds, viewport.width, viewport.height),
-    [worlds, viewport.height, viewport.width],
+  const safeFrame = useMemo(
+    () => createGalaxySafeFrame(viewport.width, viewport.height),
+    [viewport.height, viewport.width],
   );
+  const layout = useMemo(
+    () => createGalaxyLayout(worlds, safeFrame.width, safeFrame.height),
+    [safeFrame.height, safeFrame.width, worlds],
+  );
+  const motionSecondsRef = useRef(0);
+
+  useFrame((_, delta) => {
+    if (!reducedMotion) {
+      motionSecondsRef.current += Math.min(delta, MAX_FRAME_DELTA_SECONDS);
+    }
+  });
 
   return (
     <>
@@ -94,12 +109,13 @@ function GalaxyScene({
 
       {layout.planets.map(({ world, orbit, phase, radius, spinSpeed }) => (
         <ProductOrb
-          key={world.id}
+          key={world.productId}
           world={world}
           orbit={orbit}
           radius={radius}
           phase={phase}
           spinSpeed={spinSpeed}
+          motionSecondsRef={motionSecondsRef}
           reducedMotion={reducedMotion}
           onOpenWorld={onOpenWorld}
         />
@@ -311,6 +327,7 @@ interface ProductOrbProps {
   radius: number;
   phase: number;
   spinSpeed: number;
+  motionSecondsRef: { current: number };
   reducedMotion: boolean;
   onOpenWorld: (productId: string) => void;
 }
@@ -321,31 +338,16 @@ function ProductOrb({
   radius,
   phase,
   spinSpeed,
+  motionSecondsRef,
   reducedMotion,
   onOpenWorld,
 }: ProductOrbProps) {
   const groupRef = useRef<THREE.Group>(null);
   const wireRef = useRef<THREE.Mesh>(null);
-  const angleRef = useRef(phase);
-  const hoveredRef = useRef(false);
-  const focusedRef = useRef(false);
-  const pausedRef = useRef(false);
   const [hovered, setHovered] = useState(false);
   const [focused, setFocused] = useState(false);
   const active = hovered || focused;
   const initialPosition = useMemo(() => pointOnOrbit(orbit, phase), [orbit, phase]);
-
-  const updateHovered = (nextHovered: boolean) => {
-    hoveredRef.current = nextHovered;
-    pausedRef.current = hoveredRef.current || focusedRef.current;
-    setHovered(nextHovered);
-  };
-
-  const updateFocused = (nextFocused: boolean) => {
-    focusedRef.current = nextFocused;
-    pausedRef.current = hoveredRef.current || focusedRef.current;
-    setFocused(nextFocused);
-  };
 
   useEffect(() => {
     if (!hovered) return undefined;
@@ -359,8 +361,9 @@ function ProductOrb({
   useFrame((_, delta) => {
     const group = groupRef.current;
     if (!group) return;
-    if (!reducedMotion && !pausedRef.current) angleRef.current += delta * orbit.speed;
-    const nextPosition = pointOnOrbit(orbit, angleRef.current);
+    const frameDelta = Math.min(delta, MAX_FRAME_DELTA_SECONDS);
+    const orbitAngle = phase + motionSecondsRef.current * orbit.speed;
+    const nextPosition = pointOnOrbit(orbit, orbitAngle);
     const depthScale = THREE.MathUtils.mapLinear(
       nextPosition.z,
       -orbit.zAmplitude,
@@ -369,11 +372,11 @@ function ProductOrb({
       1.15,
     );
     const targetScale = radius * depthScale;
-    const blend = reducedMotion ? 1 : 1 - Math.exp(-7 * delta);
+    const blend = reducedMotion ? 1 : 1 - Math.exp(-7 * frameDelta);
     const nextScale = THREE.MathUtils.lerp(group.scale.x, targetScale, blend);
     group.scale.setScalar(nextScale);
     group.position.set(nextPosition.x, nextPosition.y, nextPosition.z);
-    if (!reducedMotion && wireRef.current) wireRef.current.rotation.y += delta * spinSpeed;
+    if (!reducedMotion && wireRef.current) wireRef.current.rotation.y += frameDelta * spinSpeed;
   });
 
   return (
@@ -387,9 +390,9 @@ function ProductOrb({
       }}
       onPointerOver={(event) => {
         event.stopPropagation();
-        updateHovered(true);
+        setHovered(true);
       }}
-      onPointerOut={() => updateHovered(false)}
+      onPointerOut={() => setHovered(false)}
     >
       <mesh geometry={SPHERE_GEOMETRY} dispose={null}>
         <meshPhysicalMaterial
@@ -442,14 +445,11 @@ function ProductOrb({
             event.stopPropagation();
             onOpenWorld(world.productId);
           }}
-          onFocus={() => updateFocused(true)}
-          onBlur={() => updateFocused(false)}
-          onPointerDown={(event) => {
-            event.stopPropagation();
-            pausedRef.current = true;
-          }}
-          onPointerEnter={() => updateHovered(true)}
-          onPointerLeave={() => updateHovered(false)}
+          onFocus={() => setFocused(true)}
+          onBlur={() => setFocused(false)}
+          onPointerDown={(event) => event.stopPropagation()}
+          onPointerEnter={() => setHovered(true)}
+          onPointerLeave={() => setHovered(false)}
           className="galaxy-world-label inline-flex w-max min-w-[4.5rem] max-w-[clamp(6.5rem,11vw,10rem)] items-center justify-center overflow-hidden border-0 bg-transparent px-1 py-2 text-center font-display text-[11px] font-semibold uppercase leading-[1.08] tracking-[0.055em] text-app-text drop-shadow-[0_2px_8px_rgba(0,0,0,1)] md:text-[13px]"
           aria-label={`Abrir mundo ${world.name}`}
           style={{
@@ -717,6 +717,18 @@ function createIsolatedProductTexture(source: THREE.Texture): THREE.Texture {
   return isolated;
 }
 
+function createGalaxySafeFrame(viewportWidth: number, viewportHeight: number) {
+  const portrait = viewportWidth < viewportHeight * 0.82;
+  const aspect = portrait ? PORTRAIT_COMPOSITION_ASPECT : LANDSCAPE_COMPOSITION_ASPECT;
+  const viewportAspect = viewportWidth / Math.max(viewportHeight, Number.EPSILON);
+
+  if (viewportAspect > aspect) {
+    return { width: viewportHeight * aspect, height: viewportHeight };
+  }
+
+  return { width: viewportWidth, height: viewportWidth / aspect };
+}
+
 function createGalaxyLayout(
   worlds: readonly ProductWorldCanvasItem[],
   viewportWidth: number,
@@ -739,7 +751,10 @@ function createGalaxyLayout(
   const axisYFactors = portrait
     ? [0.09, 0.16, 0.23, 0.31, 0.39]
     : [0.07, 0.115, 0.165, 0.22, 0.29];
-  const orbitSpeeds = [0.0028, 0.0028, 0.0028, 0.0028, 0.0028];
+  const orbitSpeeds = Array.from(
+    { length: ORBIT_RING_COUNT },
+    () => ORBIT_SPEED_RADIANS_PER_SECOND,
+  );
   const orbits: OrbitSpec[] = Array.from({ length: ORBIT_RING_COUNT }, (_, index) => ({
     id: index,
     center: orbitCenter,
@@ -820,7 +835,7 @@ function createGalaxyLayout(
     }
 
     ringWorlds.forEach((world, slot) => {
-      const random = mulberry32(hashString(`${catalogSeed}:${world.productId}:${world.id}`));
+      const random = mulberry32(hashString(`${catalogSeed}:${world.productId}`));
       const phase = bestPhases[slot] ?? slot * spacing;
       const emphasis = world.name === 'Gorra ABZ'
         ? 1.12

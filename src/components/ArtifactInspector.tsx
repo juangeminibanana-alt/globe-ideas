@@ -3,6 +3,7 @@ import {
   Check,
   Clipboard,
   Code2,
+  Copy,
   File,
   FileJson,
   Files,
@@ -10,12 +11,13 @@ import {
   Maximize2,
   Play,
   ScrollText,
+  Sparkles,
   X,
 } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
 import type { FastTrackArtifact, FastTrackManifest, WorldNode } from '../types/fastTrack';
 
-type InspectorTab = 'summary' | 'plain' | 'code' | 'files';
+type InspectorTab = 'summary' | 'script' | 'plain' | 'code' | 'files';
 
 interface ArtifactInspectorProps {
   manifest: FastTrackManifest;
@@ -28,6 +30,7 @@ const MAX_PREVIEW_CHARS = 500_000;
 
 const TABS: Array<{ id: InspectorTab; label: string; icon: typeof File }> = [
   { id: 'summary', label: 'Resumen', icon: ScrollText },
+  { id: 'script', label: 'Guion UGC', icon: Sparkles },
   { id: 'plain', label: 'Texto plano', icon: File },
   { id: 'code', label: 'Código / JSON', icon: Code2 },
   { id: 'files', label: 'Archivos', icon: Files },
@@ -250,6 +253,10 @@ export default function ArtifactInspector({
             <SummaryPanel manifest={manifest} node={selectedNode} artifact={artifact} />
           )}
 
+          {activeTab === 'script' && (
+            <UgcScriptPanel manifest={manifest} node={selectedNode} />
+          )}
+
           {activeTab === 'plain' && (
             <TextPanel
               title="Contenido en texto plano"
@@ -279,7 +286,6 @@ export default function ArtifactInspector({
     </aside>
   );
 }
-
 function Fact({ label, value, tone = 'default' }: { label: string; value: string; tone?: 'default' | 'cool' | 'warm' }) {
   const toneClass = tone === 'cool' ? 'text-app-accent' : tone === 'warm' ? 'text-product-accent' : 'text-app-text';
   return (
@@ -489,6 +495,120 @@ function MiniMetric({ label, value }: { label: string; value: string }) {
     <div className="bg-app-bg px-3 py-3">
       <p className="font-mono text-[8px] uppercase tracking-[0.14em] text-app-muted">{label}</p>
       <p className="mt-1 truncate font-mono text-[10px] uppercase text-app-text">{value}</p>
+    </div>
+  );
+}
+
+function UgcScriptPanel({
+  manifest,
+  node,
+}: {
+  manifest: FastTrackManifest;
+  node: WorldNode | null;
+}) {
+  const [copied, setCopied] = useState(false);
+
+  const productTitle = manifest.product.shortName || manifest.product.title;
+  const nodeTitle = node?.label || 'Evidencia principal del producto';
+  const nodeSummary = node?.summary || manifest.product.description?.[0] || 'Mostrar el producto con claridad y sin añadir afirmaciones no verificadas.';
+  const durationLabel = manifest.run.durationSeconds ? `${manifest.run.durationSeconds} s` : 'Duración sin registrar';
+  const verifiedClaims = [
+    manifest.product.price ? `Precio registrado: ${manifest.product.price}` : null,
+    manifest.product.rating ? `Calificación registrada: ${manifest.product.rating}` : null,
+    manifest.product.sold ? `Ventas registradas: ${manifest.product.sold}` : null,
+    manifest.product.seller ? `Vendedor registrado: ${manifest.product.seller}` : null,
+  ].filter((claim): claim is string => Boolean(claim));
+  const proofLine = verifiedClaims.length
+    ? verifiedClaims.join(' · ')
+    : 'No hay métricas comerciales verificadas en este manifiesto; usar demostración visual y no inventar cifras.';
+
+  const scriptText = `BORRADOR UGC BASADO EN EVIDENCIA
+PRODUCTO: ${productTitle}
+NODO DE APOYO: ${nodeTitle}
+DURACIÓN OBJETIVO: ${durationLabel}
+
+[HOOK 0-3 s]
+Visual: abrir con el producto completo y el detalle asociado a "${nodeTitle}".
+Voz: "Esto es lo que debes ver de ${productTitle}."
+
+[DEMOSTRACIÓN]
+Visual: mostrar la evidencia real sin ocultar forma, textura ni acabados.
+Voz: "${nodeSummary}"
+
+[PRUEBA VERIFICABLE]
+${proofLine}
+
+[CIERRE]
+Visual: volver al plano completo del producto.
+Voz: "Consulta la ficha para confirmar precio, disponibilidad y variante antes de comprar."
+
+CONTROL EDITORIAL: validar cada afirmación contra el manifiesto antes de publicar.`;
+
+  const handleCopyScript = async () => {
+    try {
+      await navigator.clipboard.writeText(scriptText);
+      setCopied(true);
+      window.setTimeout(() => setCopied(false), 2000);
+    } catch (error) {
+      console.error('No se pudo copiar el borrador UGC:', error);
+    }
+  };
+
+  return (
+    <div className="space-y-4">
+      <div className="flex items-center justify-between border-b border-app-border pb-3">
+        <div>
+          <SectionTitle>Borrador UGC desde evidencia</SectionTitle>
+          <p className="text-xs text-app-muted mt-0.5">Sin métricas de respaldo ni beneficios inventados</p>
+        </div>
+        <button
+          onClick={() => void handleCopyScript()}
+          className={`flex items-center gap-1.5 px-3 py-1.5 font-mono text-[10px] uppercase tracking-wider transition-all border ${
+            copied
+              ? 'border-emerald-500 bg-emerald-500/15 text-emerald-400'
+              : 'border-app-accent bg-app-accent/10 text-app-accent hover:bg-app-accent hover:text-slate-950'
+          }`}
+        >
+          {copied ? <Check className="size-3.5 text-emerald-400" /> : <Copy className="size-3.5" />}
+          <span>{copied ? '¡Guion Copiado!' : 'Copiar Guion'}</span>
+        </button>
+      </div>
+
+      <div className="border border-app-border bg-app-bg p-4 font-mono text-xs leading-relaxed space-y-3">
+        <div className="flex items-center justify-between border-b border-app-border/80 pb-2">
+          <span className="text-app-accent font-bold uppercase">{nodeTitle}</span>
+          <span className="border border-app-accent/60 bg-app-accent/10 px-2 py-0.5 text-[9px] text-app-accent">{durationLabel}</span>
+        </div>
+
+        <div className="space-y-3 text-app-muted">
+          <div>
+            <span className="block font-bold text-app-text mb-1">[HOOK 0-3 s]</span>
+            <p className="pl-3 border-l-2 border-app-accent text-app-text">
+              “Esto es lo que debes ver de {productTitle}.”
+            </p>
+          </div>
+
+          <div>
+            <span className="block font-bold text-app-text mb-1">[DEMOSTRACIÓN]</span>
+            <p className="pl-3 border-l-2 border-app-border">{nodeSummary}</p>
+          </div>
+
+          <div>
+            <span className="block font-bold text-app-text mb-1">[PRUEBA VERIFICABLE]</span>
+            <p className="pl-3 border-l-2 border-app-border">{proofLine}</p>
+          </div>
+
+          <div>
+            <span className="block font-bold text-app-text mb-1">[CIERRE]</span>
+            <p className="pl-3 border-l-2 border-product-accent text-product-accent font-semibold">
+              “Consulta la ficha para confirmar precio, disponibilidad y variante antes de comprar.”
+            </p>
+          </div>
+        </div>
+      </div>
+      <p className="border-l-2 border-amber-400/70 bg-amber-400/8 px-3 py-2 font-mono text-[10px] text-app-muted">
+        Borrador asistido: valida cada afirmación contra los datos del producto antes de publicarlo.
+      </p>
     </div>
   );
 }

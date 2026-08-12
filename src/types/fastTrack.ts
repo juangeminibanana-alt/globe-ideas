@@ -156,3 +156,73 @@ export interface FastTrackManifest {
 }
 
 export type WorldFilter = 'all' | WorldCategory;
+
+export type ProductImportStatus =
+  | 'queued'
+  | 'running'
+  | 'needs-input'
+  | 'blocked'
+  | 'failed'
+  | 'complete';
+
+export type ProductImportStage =
+  | 'resolve-source'
+  | 'extract-product'
+  | 'clean-images'
+  | 'research-ready'
+  | 'build-360-coverage'
+  | 'generate-product-bible'
+  | 'generate-storyboard'
+  | 'select-seven-references'
+  | 'generate-grok-video'
+  | 'upscale-video'
+  | 'publish-world';
+
+export interface ProductImportCoverageGate {
+  ready: boolean;
+  usableFullProductAngles: number;
+  requiredAngles: number;
+  missingAngles?: string[];
+}
+
+export interface ProductImportReferenceGate {
+  ready: boolean;
+  total: number;
+  productBible: number;
+  storyboard: number;
+  fullProductAngles: number;
+}
+
+export interface ProductImportError {
+  code: string;
+  message: string;
+  retriable: boolean;
+}
+
+export interface ProductImportJob {
+  id: string;
+  sourceUrl: string;
+  status: ProductImportStatus;
+  stage: ProductImportStage;
+  progress?: number | null;
+  message?: string;
+  productId?: string;
+  manifestUrl?: string;
+  terminal?: boolean;
+  mergedIntoExistingWorld?: boolean;
+  createdAt?: string;
+  updatedAt?: string;
+  gates?: {
+    coverage360?: ProductImportCoverageGate;
+    videoReferences?: ProductImportReferenceGate;
+  };
+  error?: ProductImportError;
+}
+
+export interface ProductImportCreateRequest {
+  sourceUrl: string;
+}
+
+export interface ProductImportJobResponse {
+  job: ProductImportJob;
+}

@@ -4,7 +4,9 @@ import * as THREE from 'three';
 import { generateFibonacciSphere } from '../utils/math';
 import { DISPLAY_CARD_COUNT, GLOBE_RADIUS } from '../data';
 import type { WorldNode } from '../types/fastTrack';
+import type { ProductHotspot } from '../data/hotspots';
 import Card from './Card';
+import HotspotMarker from './HotspotMarker';
 
 const FRONT_LAYOUTS: Record<number, Array<readonly [number, number]>> = {
   1: [[0, 0]],
@@ -39,6 +41,10 @@ interface GlobeProps {
   onSelect: (node: WorldNode) => void;
   onHover?: (node: WorldNode) => void;
   onHoverOut?: () => void;
+  hotspots?: ProductHotspot[];
+  selectedHotspot?: ProductHotspot | null;
+  onSelectHotspot?: (hotspot: ProductHotspot) => void;
+  showHotspots?: boolean;
 }
 
 export default function Globe({
@@ -51,6 +57,10 @@ export default function Globe({
   onSelect,
   onHover,
   onHoverOut,
+  hotspots = [],
+  selectedHotspot,
+  onSelectHotspot,
+  showHotspots = true,
 }: GlobeProps) {
   const groupRef = useRef<THREE.Group>(null);
 
@@ -112,6 +122,22 @@ export default function Globe({
           onHoverOut={onHoverOut}
         />
       ))}
+
+      {/* Render Product Hotspots */}
+      {showHotspots &&
+        onSelectHotspot &&
+        hotspots.map((hotspot) => (
+          <HotspotMarker
+            key={hotspot.id}
+            hotspot={hotspot}
+            isSelected={selectedHotspot?.id === hotspot.id}
+            onSelect={(h) => {
+              if (!isDragging.current && !didDrag.current) {
+                onSelectHotspot(h);
+              }
+            }}
+          />
+        ))}
     </group>
   );
 }
